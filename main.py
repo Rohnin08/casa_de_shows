@@ -4,21 +4,25 @@ from time import sleep
 controle = True
 
 def limpar_tela():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    # os.system('cls' if os.name == 'nt' else 'clear')
+    pass
 
 # Menu principal do sistema
 while controle == True:
     limpar_tela()
     print('''
-    =========================================
-          SISTEMA DE GESTÃO - ROCK BASEMENT
-    =========================================
+=========================================
+      SISTEMA DE GESTÃO - MUSICAL BASEMENT
+=========================================
     1. Modulo Artistas
+
     2. Modulo Shows
+
     3. Modulo Bilheteria
+
     0. Sair do Sistema
-    =========================================
-    ''')
+=========================================
+''')
     opcao_menu = int(input("Escolha uma opção: "))
 
     # Modulo de Artistas
@@ -28,22 +32,27 @@ while controle == True:
         while  True:
             limpar_tela()
             print('''
-    =========================================
-              Modulo de Artistas
-    =========================================
+=========================================
+          Modulo de Artistas
+=========================================
     1. Cadastrar Artista
+
     2. Listar Artista
+
     3. Editar Artistas
+
     4. Deletar Artitas
+
     0. Sair do Modulo
-    =========================================
-    ''')
+=========================================
+''')
             opcao_artistas = int(input("Escolha uma opção: "))
             if opcao_artistas == 1:
                 print("ADICIONAR ARTISTA")
                 nome = input("Nome do artista: ")
                 cache = input("Cache do artista: ")
                 genero_musical = input("Genero músical do artista: ")
+                print(f"Nome: {nome}\n{cache}\n{genero_musical}\n")
 
             elif opcao_artistas == 2:
                 print("LISTAR ARTISTAS")
@@ -71,16 +80,20 @@ while controle == True:
         while True:
             limpar_tela()
             print('''
-    =========================================
-              Modulo de Artistas
-    =========================================
+=========================================
+          Modulo de Artistas
+=========================================
     1. Cadastrar Show
+                  
     2. Listar Shows
+                  
     3. Editar Shows
+                  
     4. Deletar Shows
+                  
     0. Sair do Modulo
-    =========================================
-    ''')
+=========================================
+''')
             opcao_show = int(input("Escolha uma opção: "))
         
             if opcao_show == 1:
@@ -116,18 +129,24 @@ while controle == True:
         while True:
             limpar_tela()
             print('''
-    =========================================
-              Modulo de Bilheteria
-    =========================================
+=========================================
+          Modulo de Bilheteria
+=========================================
     1. Cadastrar Ingressos
+                  
     2. Listar Ingressos
+                  
     3. Editar Ingressos
+                  
     4. Deletar Ingressos
+                  
     5. Registrar Vendas
+                  
     6. Listar Vendas
+                  
     0. Sair do Modulo
-    =========================================
-    ''')
+=========================================
+''')
             opcao_bilheteria = int(input("Escolha uma opção: "))
             if opcao_bilheteria == 1:
                 print("ADICIONAR INGRESSO")
