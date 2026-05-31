@@ -3,6 +3,8 @@ from time import sleep
 
 controle = True
 
+
+
 def limpar_tela():
     # os.system('cls' if os.name == 'nt' else 'clear')
     pass
@@ -12,7 +14,7 @@ while controle == True:
     limpar_tela()
     print('''
 =========================================
-      SISTEMA DE GESTÃO - MUSICAL BASEMENT
+    SISTEMA DE GESTÃO - MUSICAL BASEMENT
 =========================================
     1. Modulo Artistas
 
@@ -52,7 +54,7 @@ while controle == True:
                 nome = input("Nome do artista: ")
                 cache = input("Cache do artista: ")
                 genero_musical = input("Genero músical do artista: ")
-                print(f"Nome: {nome}\n{cache}\n{genero_musical}\n")
+                print(f"Nome: {nome}\nCache:{cache}\nGenero músical :{genero_musical}")
 
             elif opcao_artistas == 2:
                 print("LISTAR ARTISTAS")
@@ -75,13 +77,15 @@ while controle == True:
 
     # Modulo de shows
     elif opcao_menu == 2:
+
         print("Carregando...")
         sleep(1)
+
         while True:
             limpar_tela()
             print('''
 =========================================
-          Modulo de Artistas
+          Modulo de SHOWS
 =========================================
     1. Cadastrar Show
                   
@@ -153,7 +157,7 @@ while controle == True:
                 ingresso_show =  input("Para qual show é o ingresso? ")
                 ingresso_quant = input("Número de ingressos? ")
                 ingresso_tipo = input("Qual o tipo de ingresso? ")
-                ingresso_preco = input("Preco do ingresso")
+                ingresso_preco = input("Preco do ingresso: ")
 
             elif opcao_bilheteria == 2:
                 print("LISTAGEM DE INGRESSOS")
