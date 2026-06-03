@@ -1,29 +1,32 @@
 import os
 from time import sleep
+import artistas
 
 controle = True
 
 
 
 def limpar_tela():
-    # os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')
     pass
 
 # Menu principal do sistema
 while controle == True:
     limpar_tela()
-    print('''
-=========================================
-    SISTEMA DE GESTÃO - MUSICAL BASEMENT
-=========================================
+    print('''⠀⠀⠀⠀
+==============================================
+            ♬♪MUSICAL BASEMENT♬♪
+==============================================
     1. Modulo Artistas
 
     2. Modulo Shows
 
     3. Modulo Bilheteria
+    
+    5. Sobre o sistema
 
     0. Sair do Sistema
-=========================================
+===============================================
 ''')
     opcao_menu = int(input("Escolha uma opção: "))
 
@@ -31,50 +34,8 @@ while controle == True:
     if opcao_menu == 1:
         print("Carregando...")
         sleep(1)
-        while  True:
-            limpar_tela()
-            print('''
-=========================================
-          Modulo de Artistas
-=========================================
-    1. Cadastrar Artista
-
-    2. Listar Artista
-
-    3. Editar Artistas
-
-    4. Deletar Artitas
-
-    0. Sair do Modulo
-=========================================
-''')
-            opcao_artistas = int(input("Escolha uma opção: "))
-            if opcao_artistas == 1:
-                print("ADICIONAR ARTISTA")
-                nome = input("Nome do artista: ")
-                cache = input("Cache do artista: ")
-                genero_musical = input("Genero músical do artista: ")
-                print(f"Nome: {nome}\nCache:{cache}\nGenero músical :{genero_musical}")
-
-            elif opcao_artistas == 2:
-                print("LISTAR ARTISTAS")
-                print("⚠️Estamos desenvolvendo isso")
-
-            elif opcao_artistas == 3:
-                print("EDITAR ARTISTAS")
-
-            elif opcao_artistas == 4:
-                print("Excluir ARTISTAS")
-                print("⚠️Estamos desenvolvendo isso")
-
-            elif opcao_artistas == 0:
-                print("Saindo do modulo...")
-                sleep(1)
-                break
-
-            else:
-                print("✋👺🚫Opção invalida, tente novamente")
-
+        artistas.menu_artistas()
+        
     # Modulo de shows
     elif opcao_menu == 2:
 
