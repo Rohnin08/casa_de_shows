@@ -18,26 +18,16 @@ artistas = {
     }
 }
 
-def buscar_por_id():
-    id_artista = int(input("ID do artista que deseja exibir as informações: "))   
-
-    if id_artista in artistas: #Procura o o id de artistas dentro de artistas
-        artista = artistas[id_artista] #Cria uma variavel para o armazenar as informações do artista do indice que o usuário digitol    
-        #Exibição das informações
-        print(f"Nome: {artista['nome']}")
-        print(f"Cache: R${artista['cache']:.2f}")
-        print(f"Gênero: {artista['genero']}")
-    else:
-        print("Artista não encontrado")
-
-def buscar_por_nome():
-    pass
+def exibir_todos():
+    for chave, artista in artistas.items():
+        pass
 
 def cadastrar_artista(): 
-    """ Função para cadastrar os artistas, ela pega os valores digitados pelo usuário e associa-os a chaves dos dicionarios. """
-    print("ADICIONAR ARTISTA")
-    novo_id = len(artistas)+1
-    nome = input("Nome do artista: ")
+    """ Função para cadastrar os artistas, ela pega os valores digitados pelo usuário e associa-os a chaves dos dicionarios."""
+    print("Cadastro de Artistas")
+    print()
+    novo_id = len(artistas)+1 #Define um ID para o usuário com base no tamanho da lista e adiciona 1.
+    nome = input("Nome do artista: ") 
     cache = float(input("Cache do artista: "))
     genero = input("Genero músical do artista: ")
 
@@ -49,44 +39,78 @@ def cadastrar_artista():
     
     artistas[novo_id] = artista
 
-    return(artistas)
-
+# Buscar Artista
 def buscar_artistas():
-    print('''
-    =========================================
-                Buscador de de artistas
-    =========================================
-          1. Buscar por id(busca mais precisa)
-          2. Buscar por nome
-          3. Busca por Gênero Músical
-          4. Buscar por Cache
+    """Função "guarda-chuva" dos filtros de busca da opção de busca"""
+    while True:
 
-          ''')
-    print()
-    opcao = int(input("Qual a opção? "))
-    if opcao == 1:
-        id_artista = int(input("ID do artista que deseja exibir as informações: "))   
+        print('''
+---------------------------------------       
+        Buscador de de Artistas
+---------------------------------------
 
-        if id_artista in artistas: #Procura o o id de artistas dentro de artistas
-            artista = artistas[id_artista] #Cria uma variavel para o armazenar as informações do artista do indice que o usuário digitol
+  1. Buscar por id
 
-            #Exibição das informações
-            return f"\nNome: {artista['nome']}\nCache: R${artista['cache']:.2f}\nGênero: {artista['genero']}\n"
+  2. Buscar por nome
+
+  3. Busca por Gênero Músical
+
+  4. Buscar por Cache
+  
+  0. Voltar ao modulo de artistas
+  ''')
+        print()
+        opcao = int(input("Qual a opção? "))
+
+        #Busca por id
+        if opcao == 1:
+            id_artista = int(input("ID do artista que deseja exibir as informações: "))   
+
+            if id_artista in artistas: #Procura o o id de artistas dentro de artistas
+                artista = artistas[id_artista] #Cria uma variavel para o armazenar as informações do artista do indice que o usuário digitou
+
+                #Exibição das informações usando um laço. Fiz isso para que as informações não sejam jogadas e o código para para a prixima etapa abruptamente
+                parar = " "
+                while parar != "sim":
+                    print(f"\nNome: {artista['nome']}\nCache: R${artista['cache']:.2f}\nGênero: {artista['genero']}\n")
+                    parar = input("Fechar tela(digite 'sim' para sair)?").lower()
+
+            else:
+                 print("Artista não encontrado")
+        
+        elif opcao == 2:
+            pass
+
+        elif opcao == 3:
+            pass
+
+        elif opcao == 4:
+            pass
+        elif opcao == 0:
+            break
+
         else:
-            print("Artista não encontrado")
-    elif opcao == 2:
-        pass
+            print("Opção desconhecida")
 
-    elif opcao == 3:
-        pass
+#Editar artista
+def editar_artista():
+    print("Editor de Artistas")
+    print()
+    id_artista = int(input("ID do artista que deseja editar?"))
+    
+    if id_artista in artistas:
+        nome = str(input("Novo nome: "))
+        cache = float(input("Novo cache: "))
+        genero = str(input("Novo genero músical: "))
 
-    elif opcao == 4:
-        pass
+        artista = {
+            'nome': nome,
+            'cache':cache,
+            'genero': genero
+        }
 
-    else:
-        print("Opção desconhecida")
-
-
+        artistas[id_artista] = artista #Atribui o valor do dicionario artista ao item do valor do id do "dicionario pai" artistas
+        
 
 
 def menu_artistas():
@@ -109,17 +133,14 @@ def menu_artistas():
         
         opcao_artistas = int(input("Escolha uma opção: "))
         if opcao_artistas == 1:
-            return cadastrar_artista()
+            cadastrar_artista()
 
         elif opcao_artistas == 2:
-            return buscar_artistas()
+            buscar_artistas()
         
         elif opcao_artistas == 3:
-            print("EDITAR ARTISTAS")
-            id_artista = int(input("Digite o ID do artista: "))
-            nome = input("Novo nome: ")
-            cache = input("Novo Cache: ")
-            genero_musical = input("Novo genero músical: ")
+            editar_artista()
+
         elif opcao_artistas == 4:
             print("Excluir ARTISTAS")
             print("Deletando...")
