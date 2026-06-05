@@ -24,7 +24,7 @@ def exibir_todos():
 
 def cadastrar_artista(): 
     """ Função para cadastrar os artistas, ela pega os valores digitados pelo usuário e associa-os a chaves dos dicionarios."""
-    print("Cadastro de Artistas")
+    print("--- Cadastro de Artistas ---")
     print()
     novo_id = len(artistas)+1 #Define um ID para o usuário com base no tamanho da lista e adiciona 1.
     nome = input("Nome do artista: ") 
@@ -94,7 +94,7 @@ def buscar_artistas():
 
 #Editar artista
 def editar_artista():
-    print("Editor de Artistas")
+    print("---Editor de Artistas---")
     print()
     id_artista = int(input("ID do artista que deseja editar?"))
     
@@ -112,6 +112,24 @@ def editar_artista():
         artistas[id_artista] = artista #Atribui o valor do dicionario artista ao item do valor do id do "dicionario pai" artistas
         
 
+def excluir_artista():
+    print("---Exclusão de Artista----")
+
+    id_artista = int(input("Digite o ID do artista que você quer deletar: "))
+
+    if id_artista not in artistas:
+        print("Artista não encontrado")
+        return 
+    else:
+        validar = input(f"Quer mesmo deletar o arstista:{artistas[id_artista]['nome']}?(Digite sim se quiser apagar)").lower()
+        if validar == "sim":
+            print("Excluindo...")
+            sleep(1)
+            del artistas[id_artista]
+            print("Artista excluido com sucesso")
+        else:
+            print("Oparação cancelada")
+            
 
 def menu_artistas():
     while  True:
@@ -142,14 +160,13 @@ def menu_artistas():
             editar_artista()
 
         elif opcao_artistas == 4:
-            print("Excluir ARTISTAS")
-            print("Deletando...")
-            sleep(1)
-            print("Artista Deletado com sucesso!")
+           excluir_artista()
+
         elif opcao_artistas == 0:
             print("Saindo do modulo...")
             sleep(1)
             break
+        
         else:
             print("✋👺🚫Opção invalida, tente novamente")
 
