@@ -53,6 +53,19 @@ while controle == True:
         sleep(1)
         limpar_tela()
         bilheteria.menu_bilheteria()
+    
+    elif opcao_menu == 4:
+        print("Carregando...")
+        sleep(1)
+        limpar_tela()
+        pass
+
+    elif opcao_menu == 5:
+        print("Carregando...")
+        sleep(1)
+        limpar_tela()
+        pass
+
 
     elif opcao_menu == 0:
         print("Saindo do programa...")
