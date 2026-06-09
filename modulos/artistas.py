@@ -25,16 +25,16 @@ def cadastrar_artista():
 def buscar_artistas():
     while True:
         print('''
-    =========================================
-             Buscador de Artistas
-    =========================================
-          1. Buscar por ID
-          2. Buscar por Nome
-          3. Buscar por Gênero
-          4. Buscar por Cache
-          0. Voltar
-        ''')
-        
+=========================================
+         Buscador de Artistas
+=========================================
+      1. Buscar por ID
+      2. Buscar por Nome
+      3. Buscar por Gênero
+      4. Buscar por Cache
+      0. Voltar
+    ''')
+    
         opcao = int(input("Qual a opção? "))
         
         if opcao == 1:
@@ -75,16 +75,16 @@ def buscar_artistas():
 def menu_artistas():
     while True:
         print('''
-    =========================================
-              Modulo de Artistas
-    =========================================
-        1. Cadastrar Artista
-        2. Buscar/Listar Artista
-        3. Editar Artistas
-        4. Deletar Artistas
-        0. Sair do Modulo
-    =========================================
-    ''')
+=========================================
+          Modulo de Artistas
+=========================================
+    1. Cadastrar Artista
+    2. Buscar/Listar Artista
+    3. Editar Artistas
+    4. Deletar Artistas
+    0. Sair do Modulo
+=========================================
+''')
         
         opcao = int(input("Escolha uma opção: "))
         
