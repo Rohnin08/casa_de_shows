@@ -33,17 +33,17 @@ def cadastrar_show():
         if id_artista == 0:
             break
         elif id_artista in artistas.artistas:
-            if id_artista not in lineup:
-                lineup.append(id_artista)
-                print(f"{artistas.artistas[id_artista]['nome']} adicionado ao lineup.")
+            if id_artista not in lineup: #Verifica se o artista com aquele id já está no lineup do show.
+                lineup.append(id_artista) #se não tiver ele adiciona
+                print(f"{artistas.artistas[id_artista]['nome']} adicionado ao lineup.") #Manda essa mensagem para provar que o artista foi adicionado
             else:
-                print("Esse artista já está no lineup.")
+                print("Esse artista já está no lineup.")#Se não ele exibe isso daqui. Uma mensagem que te impede de colocar dois Slipknots no mesmo show
         else:
-            print("Artista não encontrado.")
+            print("Artista não encontrado.")#Caso ele não encontre nem um artista com aquele id ele exibe isso daqui
 
-    hora_inicio = time(*map(int, input("Horário de início (HH MM): ").split()))
-    hora_termino = time(*map(int, input("Horário de término (HH MM): ").split()))
-    data = date(*map(int, input("Data (AAAA MM DD): ").split()))
+    hora_inicio = time(*map(int, input("Horário de início (HH MM): ").split())) #Recebe o valor digitado pelo usuário depois transforma em lista usando splip. Depois aplica o map para converter tudo em inteiro, e desempacota * papra time
+    hora_termino = time(*map(int, input("Horário de término (HH MM): ").split())) #Mesma coisa da linha 45
+    data = date(*map(int, input("Data (AAAA MM DD): ").split())) #Faz o mesmo só que com data
 
     shows[novo_id] = {
         'nome': nome,
@@ -58,7 +58,10 @@ def cadastrar_show():
 
 def exibir_show(id_show):
     show = shows[id_show]
-    nomes_lineup = [artistas.artistas[id]['nome'] for id in show['lineup'] if id in artistas.artistas]
+    nomes_lineup = []
+    for id in show['lineup']:
+        if id in artistas.artistas:
+            nomes_lineup.append(artistas.artistas[id]['nome'])
 
     print(f"""
   ID do Show: {id_show}
