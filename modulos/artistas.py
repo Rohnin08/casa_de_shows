@@ -9,7 +9,10 @@ artistas = {
 def cadastrar_artista(): 
     print("\n--- ADICIONAR ARTISTA ---")
     # Usando max() para garantir que o ID seja sempre único, mesmo após deleções
-    novo_id = max(artistas.keys()) + 1 if artistas else 1
+    if artistas:
+        novo_id = max(artistas.keys()) + 1
+    else:
+        novo_id = 1
     
     nome = input("Nome do artista: ")
     cache = float(input("Cache do artista: "))

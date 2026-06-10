@@ -15,8 +15,10 @@ shows = {
 def cadastrar_show():
     print("--- Cadastro de Shows ---")
     print()
-    # Evita quebra de IDs caso o dicionário seja esvaziado
-    novo_id = max(shows.keys()) + 1 if shows else 1
+    if shows: 
+        novo_id = max(shows.keys()) + 1
+    else:
+        novo_id = 1
     nome = input("Nome do show: ")
 
     print("\nArtistas disponíveis:")

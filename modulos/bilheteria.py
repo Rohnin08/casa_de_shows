@@ -48,12 +48,12 @@ def cadastrar_ingresso():
         }
 
         bilheteria[novo_id] = ingresso
-        print(f"\nIngresso para o show '{shows.shows[id_show]['nome']}' cadastrado com sucesso!")
+        print(f"\nIngresso para o show '{obter_nome_show(id_show)}' cadastrado com sucesso!")
     else:
         print("Show não encontrado. Operação cancelada.")
 
 
-# Buscar Ingresso
+# Buscar Ingresso na bilheteria
 def buscar_bilheteria():
     """Função "guarda-chuva" dos filtros de busca da opção de busca da bilheteria"""
     while True:
@@ -70,6 +70,7 @@ def buscar_bilheteria():
   3. Buscar por Preço Máximo
   
   0. Voltar ao modulo de bilheteria
+              
   ''')
         print()
         opcao = int(input("Qual a opção? "))
@@ -82,11 +83,11 @@ def buscar_bilheteria():
                 ingresso = bilheteria[id_ingresso]
                 id_show = ingresso['id_show']
                 if id_show in shows.shows:
-                    nome_show = shows.shows[id_show]['nome'] 
+                    nome_show = obter_nome_show(id_show)
                 else:
                     print("Show Desconhecido")
 
-                # Loop de exibição até digitar "sim", igual ao seu modelo
+                # Loop de exibição até digitar "sim", fiz isso pra evitar que o código jogue a informação e pule para a proxima parte
                 parar = " "
                 while parar != "sim":
                     print(f"\nID Ingresso: {id_ingresso}\nShow: {nome_show}\nPreço: R${ingresso['preco']:.2f}\nQuantidade: {ingresso['qtd_disponivel']}\n")
@@ -121,7 +122,7 @@ def buscar_bilheteria():
                 if ing['preco'] <= preco_max:
                     id_show = ing['id_show']
                     if id_show in shows.shows:
-                        nome_show = shows.shows[id_show]['nome'] 
+                        nome_show = obter_nome_show(id_show) 
                     else:
                         print("Show Desconhecido")
 
@@ -179,12 +180,7 @@ def excluir_ingresso():
 
     if id_ingresso in bilheteria:
         id_show = bilheteria[id_ingresso]['id_show']
-        if id_show in shows.shows:
-            nome_show = shows.shows[id_show]['nome']
-        else: nome_show = "Show Desconhecido"
-    else:
-        print("Ingresso não encontrado")
-        return 
+        nome_show = obter_nome_show(id_show)
 
         validar = input(f"Quer mesmo deletar os ingressos do show: {nome_show}? (Digite sim se quiser apagar) ").lower()
         if validar == "sim":
@@ -192,27 +188,31 @@ def excluir_ingresso():
             sleep(1)
             del bilheteria[id_ingresso]
             print("Ingresso excluido com sucesso")
+
         else:
             print("Operação cancelada")
-            
+
+    else:
+        print("Ingresso não encontrado")
+        return 
 
 def menu_bilheteria():
     while True:
         print('''
-    =========================================
-              Modulo de Bilheteria
-    =========================================
-        1. Cadastrar Ingresso
-
-        2. Listar/Buscar Ingressos
-
-        3. Editar Ingressos
-
-        4. Deletar Ingressos
-
-        0. Sair do Modulo
-    =========================================
-    ''')
+=========================================
+          Modulo de Bilheteria
+=========================================
+    1. Cadastrar Ingresso
+              
+    2. Listar/Buscar Ingressos
+              
+    3. Editar Ingressos
+              
+    4. Deletar Ingressos
+              
+    0. Sair do Modulo
+=========================================
+''')
         
         opcao_bilheteria = int(input("Escolha uma opção: "))
         if opcao_bilheteria == 1:
