@@ -98,7 +98,7 @@ def buscar_shows():
                     exibir_show(id_show)
                     parar = input("Fechar tela (digite 'sim' para sair): ").lower()
             else:
-                print("Show não encontrado.")
+                nome_show = "Show Desconhecido"
 
         elif opcao == 2:
             termo = input("Digite o nome do show (ou parte dele): ").lower()

@@ -85,8 +85,7 @@ def buscar_bilheteria():
                 if id_show in shows.shows:
                     nome_show = obter_nome_show(id_show)
                 else:
-                    print("Show Desconhecido")
-
+                    nome_show = "Show Desconhecido"
                 # Loop de exibição até digitar "sim", fiz isso pra evitar que o código jogue a informação e pule para a proxima parte
                 parar = " "
                 while parar != "sim":
