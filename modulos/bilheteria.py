@@ -1,5 +1,6 @@
 from time import sleep
 import modulos.shows as shows
+import modulos.artistas as artistas
 
 bilheteria = {
     1: {
@@ -9,11 +10,44 @@ bilheteria = {
     }
 }
 
+vendas = {}
+
 def obter_nome_show(id_show):
     if id_show in shows.shows:
         return shows.shows[id_show]['nome']
     else:
         return "Show Desconhecido"
+    
+def exibir_shows_disponiveis():
+    print("---Shows Disponiveis---\n")
+    for id_ing, ing in bilheteria.items():
+        id_show = ing['id_show']
+        if id_show not in shows.shows:
+            continue
+        show = shows.shows[id_show]
+
+        nomes_do_lineup = []
+        for id_art in show['lineup']:
+            if id_art in artistas.artistas:
+                nomes_do_lineup.append(artistas.artistas[id_art]['nome'])
+            else:
+                print("Artista não encontrado")
+        lineup_str = ', '.join(nomes_do_lineup)
+
+        print(f''' 
+==========================
+ID Ingresso : {id_ing}
+Show        : {show['nome']}
+Lineup      : {lineup_str}
+Horário     : {show['hora_inicio'].strftime('%H:%M')} às {show['hora_termino'].strftime('%H:%M')}
+Data        : {show['data'].strftime('%d/%m/%Y')}
+Preço       : R$ {ing['preco']:.2f}
+Disponíveis : {ing['qtd_disponivel']} ingressos
+==========================''')
+
+
+
+
 
 def cadastrar_ingresso():
     """ Função para cadastrar os ingressos, ela pega os valores digitados pelo usuário e associa-os a chaves dos dicionarios. """
@@ -194,6 +228,54 @@ def excluir_ingresso():
     else:
         print("Ingresso não encontrado")
         return 
+    
+def vender_ingresso():
+    print("--- Venda de Ingressos ---")
+
+    if not bilheteria: ##Verfiica se o dicionario está fazio
+        print("Nenhum ingresso cadastrado no sistema")
+        return
+    exibir_shows_disponiveis()
+
+    id_ingresso = int(input("\nDigite o ID do ingresso que você deseja comprar: "))
+
+    if id_ingresso not in bilheteria:
+        print("❌ Ingresso não encontrado")
+        return
+    ingresso = bilheteria[id_ingresso]
+
+    if ingresso['qtd_disponivel'] == 0:
+        print("❌ Ingressos esgotados para esse show. ")
+
+    quantidade = int(input(f"Quantos ingressos? (disponíveis: {ingresso['qtd_disponivel']})"))
+
+    if quantidade > ingresso['qtd_disponivel']:
+        print(f"Quantidade indisponivel. Máximo: {ingresso['qtd_disponivel']}")
+        return
+    
+    valor_total = quantidade * ingresso['preco']
+    nome_show = obter_nome_show(ingresso['id_show'])
+
+    confirmar = input(f"\nComfirmar compra de {quantidade} ingressos para '{nome_show}' por R$ {valor_total:.2f}? (sim/não): ").lower()
+    
+    if confirmar == 'sim':
+
+        if vendas:
+            novo_id_venda = max(vendas.keys())+1
+            vendas[novo_id_venda] = {
+        'id_ingresso': id_ingresso,
+        'id_show': ingresso['id_show'],
+        'quantidade': quantidade,
+        'valor_total': valor_total
+    }
+        ingresso["qtd_disponivel"] -= quantidade
+
+        print(f"✅Compra realizada! {quantidade} ingresso(s) para '{nome_show}'. Total: R$ {valor_total: .2f} ")
+    
+    else:
+        print("❌Operação cancelada")
+
+
 
 def menu_bilheteria():
     while True:
@@ -208,6 +290,8 @@ def menu_bilheteria():
     3. Editar Ingressos
               
     4. Deletar Ingressos
+    
+    5. Computar vendas
               
     0. Sair do Modulo
 =========================================
@@ -225,6 +309,9 @@ def menu_bilheteria():
 
         elif opcao_bilheteria == 4:
             excluir_ingresso()
+
+        elif opcao_bilheteria == 5:
+            vender_ingresso()
 
         elif opcao_bilheteria == 0:
             print("Saindo do modulo...")

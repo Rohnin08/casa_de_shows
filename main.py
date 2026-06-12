@@ -19,17 +19,17 @@ while controle == True:
 ==============================================
          ♬ ♪ MUSICAL BASEMENT ♬ ♪
 ==============================================
-    1. Artistas
+    1. Artistas 👨‍🎤
 
-    2. Shows
+    2. Shows 🎤
 
-    3. Bilheteria
+    3. Bilheteria 🎫
     
-    4. Relatorios de Vendas
+    4. Relatorios de Vendas 💹
     
-    5. Sobre o sistema
+    5. Sobre o sistema 🥸
 
-    0. Sair do Sistema
+    0. Sair do Sistema 📤
 ===============================================
 ''')
     opcao_menu = int(input("Escolha uma opção: "))
@@ -37,30 +37,34 @@ while controle == True:
     # Modulo de Artistas
     limpar_tela()
     if opcao_menu == 1:
+        limpar_tela()
         print("Carregando...")
         sleep(1)
         artistas.menu_artistas()
         
     # Modulo de Shows
     elif opcao_menu == 2:
+        limpar_tela()
         print("Carregando...")
         sleep(1)
         shows.menu_shows()
 
     #Modulo Bilheteria
     elif opcao_menu == 3:
+        limpar_tela()
         print("Carregando...")
         sleep(1)
-        limpar_tela()
         bilheteria.menu_bilheteria()
     
     elif opcao_menu == 4:
+        limpar_tela()
         print("Carregando...")
         sleep(1)
         limpar_tela()
         pass
 
     elif opcao_menu == 5:
+        limpar_tela()
         print("Carregando...")
         sleep(1)
         limpar_tela()
@@ -68,6 +72,7 @@ while controle == True:
 
 
     elif opcao_menu == 0:
+        limpar_tela()
         print("Saindo do programa...")
         sleep(1)
         controle = False
