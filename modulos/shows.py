@@ -1,16 +1,29 @@
 from datetime import date, time
 from time import sleep
+import modulos.storage as storage
 import modulos.artistas as artistas
 
-shows = {
-    1: {
-        'nome': 'Metal Fest',
-        'lineup': [1, 2],
-        'hora_inicio': time(20, 0),
-        'hora_termino': time(23, 30),
-        'data': date(2025, 7, 15)
+# ──────────────────────────────────────────────
+# INICIALIZAÇÃO
+# ──────────────────────────────────────────────
+
+shows = storage.carregar("shows")
+
+if not shows:
+    shows = {
+        1: {
+            'nome': 'Metal Fest',
+            'lineup': [1, 2],
+            'hora_inicio': time(20, 0),
+            'hora_termino': time(23, 30),
+            'data': date(2025, 7, 15)
+        }
     }
-}
+    storage.salvar("shows", shows)
+
+# ──────────────────────────────────────────────
+# CRUD
+# ──────────────────────────────────────────────
 
 def cadastrar_show():
     print("--- Cadastro de Shows ---")
@@ -33,17 +46,17 @@ def cadastrar_show():
         if id_artista == 0:
             break
         elif id_artista in artistas.artistas:
-            if id_artista not in lineup: #Verifica se o artista com aquele id já está no lineup do show.
-                lineup.append(id_artista) #se não tiver ele adiciona
-                print(f"{artistas.artistas[id_artista]['nome']} adicionado ao lineup.") #Manda essa mensagem para provar que o artista foi adicionado
+            if id_artista not in lineup:
+                lineup.append(id_artista)
+                print(f"{artistas.artistas[id_artista]['nome']} adicionado ao lineup.")
             else:
-                print("Esse artista já está no lineup.")#Se não ele exibe isso daqui. Uma mensagem que te impede de colocar dois Slipknots no mesmo show
+                print("Esse artista já está no lineup.")
         else:
-            print("Artista não encontrado.")#Caso ele não encontre nem um artista com aquele id ele exibe isso daqui
+            print("Artista não encontrado.")
 
-    hora_inicio = time(*map(int, input("Horário de início (HH MM): ").split())) #Recebe o valor digitado pelo usuário depois transforma em lista usando splip. Depois aplica o map para converter tudo em inteiro, e desempacota * papra time
-    hora_termino = time(*map(int, input("Horário de término (HH MM): ").split())) #Mesma coisa da linha 45
-    data = date(*map(int, input("Data (AAAA MM DD): ").split())) #Faz o mesmo só que com data
+    hora_inicio  = time(*map(int, input("Horário de início (HH MM): ").split()))
+    hora_termino = time(*map(int, input("Horário de término (HH MM): ").split()))
+    data         = date(*map(int, input("Data (AAAA MM DD): ").split()))
 
     shows[novo_id] = {
         'nome': nome,
@@ -52,7 +65,7 @@ def cadastrar_show():
         'hora_termino': hora_termino,
         'data': data
     }
-
+    storage.salvar("shows", shows)
     print(f"\nShow '{nome}' cadastrado com sucesso!")
 
 
@@ -79,13 +92,9 @@ def buscar_shows():
 ---------------------------------------
         Buscador de Shows
 ---------------------------------------
-
   1. Buscar por ID
-
   2. Buscar por nome
-
   3. Listar todos
-
   0. Voltar
 ''')
         opcao = int(input("Qual a opção? "))
@@ -98,7 +107,7 @@ def buscar_shows():
                     exibir_show(id_show)
                     parar = input("Fechar tela (digite 'sim' para sair): ").lower()
             else:
-                nome_show = "Show Desconhecido"
+                print("❌ Show não encontrado.")
 
         elif opcao == 2:
             termo = input("Digite o nome do show (ou parte dele): ").lower()
@@ -117,7 +126,6 @@ def buscar_shows():
             if not shows:
                 print("Nenhum show cadastrado ainda.")
             else:
-                # Percorre o dicionário e usa a sua função de exibição formatada
                 for id_show in shows.keys():
                     exibir_show(id_show)
             input("\nPressione Enter para continuar...")
@@ -145,7 +153,7 @@ def editar_show():
 
     lineup = []
     while True:
-        entrada = input("Digite o ID do artista (ou 0 para terminator): ")
+        entrada = input("Digite o ID do artista (ou 0 para terminar): ")
         id_artista = int(entrada)
 
         if id_artista == 0:
@@ -153,12 +161,13 @@ def editar_show():
         elif id_artista in artistas.artistas:
             if id_artista not in lineup:
                 lineup.append(id_artista)
+                print(f"{artistas.artistas[id_artista]['nome']} adicionado ao lineup.")
         else:
             print("Artista não encontrado.")
 
-    hora_inicio = time(*map(int, input("Novo horário de início (HH MM): ").split()))
+    hora_inicio  = time(*map(int, input("Novo horário de início (HH MM): ").split()))
     hora_termino = time(*map(int, input("Novo horário de término (HH MM): ").split()))
-    data = date(*map(int, input("Nova data (AAAA MM DD): ").split()))
+    data         = date(*map(int, input("Nova data (AAAA MM DD): ").split()))
 
     shows[id_show] = {
         'nome': nome,
@@ -167,7 +176,7 @@ def editar_show():
         'hora_termino': hora_termino,
         'data': data
     }
-
+    storage.salvar("shows", shows)
     print("Show editado com sucesso!")
 
 
@@ -184,10 +193,15 @@ def excluir_show():
         print("Excluindo...")
         sleep(1)
         del shows[id_show]
+        storage.salvar("shows", shows)
         print("Show excluído com sucesso.")
     else:
         print("Operação cancelada.")
 
+
+# ──────────────────────────────────────────────
+# MENU PRINCIPAL DO MÓDULO
+# ──────────────────────────────────────────────
 
 def menu_shows():
     while True:
@@ -196,13 +210,9 @@ def menu_shows():
             Modulo de Shows
 =========================================
     1. Cadastrar Show
-
     2. Buscar Show
-
     3. Editar Show
-
     4. Deletar Show
-
     0. Sair do Módulo
 =========================================
 ''')

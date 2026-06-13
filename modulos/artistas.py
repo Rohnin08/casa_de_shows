@@ -1,44 +1,48 @@
 from time import sleep
+import modulos.storage as storage
 
+# ──────────────────────────────────────────────
+# INICIALIZAÇÃO
+# ──────────────────────────────────────────────
 
-artistas = {
-    1: {'nome': 'Slipknot',    'cache': 1000.00, 'genero': 'Metal'},
-    2: {'nome': 'Linkin Park', 'cache': 1500.00, 'genero': 'Nu Metal'},
-    3: {'nome': 'Limp Bizkit', 'cache': 1200.00, 'genero': 'Nu Metal'}
-}
+artistas = storage.carregar("artistas")
 
+if not artistas:
+    artistas = {
+        1: {'nome': 'Slipknot',    'cache': 1000.00, 'genero': 'Metal'},
+        2: {'nome': 'Linkin Park', 'cache': 1500.00, 'genero': 'Nu Metal'},
+        3: {'nome': 'Limp Bizkit', 'cache': 1200.00, 'genero': 'Nu Metal'}
+    }
+    storage.salvar("artistas", artistas)
 
 # ──────────────────────────────────────────────
 # HELPERS
 # ──────────────────────────────────────────────
 
-def _proximo_id():
+def gerar_id():
     """Retorna um ID único mesmo após deleções."""
     if artistas:
         return max(artistas.keys()) + 1
     else:
         return 1
 
-
-def _exibir_artista(id_art, dados):
+def exibir_artista(id_art, dados):
     print(f"  ID: {id_art} | Nome: {dados['nome']} | Cache: R${dados['cache']:.2f} | Gênero: {dados['genero']}")
-
 
 # ──────────────────────────────────────────────
 # CRUD
 # ──────────────────────────────────────────────
 
 def cadastrar_artista(): 
-    """ Função para cadastrar os artistas, ela pega os valores digitados pelo usuário e associa-os a chaves dos dicionarios."""
     print("\n--- CADASTRAR ARTISTA ---")
     nome   = input("Nome do artista: ")
     cache  = float(input("Cache do artista: R$ "))
     genero = input("Gênero musical: ")
 
-    novo_id = _proximo_id()
+    novo_id = gerar_id()
     artistas[novo_id] = {'nome': nome, 'cache': cache, 'genero': genero}
+    storage.salvar("artistas", artistas)
     print(f"\n✅ {nome} cadastrado com sucesso! (ID: {novo_id})")
-
 
 def exibir_todos():
     if not artistas:
@@ -46,11 +50,9 @@ def exibir_todos():
         return
     print("\n--- LISTA DE ARTISTAS ---")
     for id_art, dados in artistas.items():
-        _exibir_artista(id_art, dados)
-
+        exibir_artista(id_art, dados)  # corrigido: era _exibir_artista
 
 def buscar_artistas():
-    """Função "guarda-chuva" dos filtros de busca da opção de busca"""
     while True:
         print('''
 =========================================
@@ -68,7 +70,7 @@ def buscar_artistas():
         if opcao == 1:
             id_art = int(input("ID do artista: "))
             if id_art in artistas:
-                _exibir_artista(id_art, artistas[id_art])
+                exibir_artista(id_art, artistas[id_art])  # corrigido
             else:
                 print("❌ Artista não encontrado.")
 
@@ -80,7 +82,7 @@ def buscar_artistas():
                     resultado.append((i, d))
             if resultado:
                 for id_art, dados in resultado:
-                    _exibir_artista(id_art, dados)
+                    exibir_artista(id_art, dados)  # corrigido
             else:
                 print("❌ Nenhum artista encontrado com este nome.")
 
@@ -92,7 +94,7 @@ def buscar_artistas():
                     resultado.append((i, d))
             if resultado:
                 for id_art, dados in resultado:
-                    _exibir_artista(id_art, dados)
+                    exibir_artista(id_art, dados)
             else:
                 print("❌ Nenhum artista encontrado neste gênero.")
 
@@ -104,7 +106,7 @@ def buscar_artistas():
                     resultado.append((i, d))
             if resultado:
                 for id_art, dados in resultado:
-                    _exibir_artista(id_art, dados)
+                    exibir_artista(id_art, dados)
             else:
                 print("❌ Nenhum artista encontrado nessa faixa de cache.")
 
@@ -116,9 +118,7 @@ def buscar_artistas():
 
         input("\nPressione Enter para continuar...")
 
-
 def editar_artista():
-    '''Captura o ID digitado procura no dicionario e '''
     print("\n--- EDITAR ARTISTA ---")
     id_artista = int(input("ID do artista que deseja editar: "))
 
@@ -130,33 +130,17 @@ def editar_artista():
     print(f"Editando: {atual['nome']} | Cache: R${atual['cache']:.2f} | Gênero: {atual['genero']}")
     print("(Deixe em branco para manter o valor atual)\n")
 
+    nome      = input(f"Novo nome [{atual['nome']}]: ").strip()
+    cache_str = input(f"Novo cache [{atual['cache']:.2f}]: ").strip()
+    genero    = input(f"Novo gênero [{atual['genero']}]: ").strip()
 
-    nome   = input(f"Novo nome [{atual['nome']}]: ").strip() #Esse strip vai limpar os espaços em branco para garantir que o usuário digitou alguma coisa se ele não digitou nada
-    cache_str = input(f"Novo cache [{atual['cache']:.2f}]: ").strip() #Mesma coisa da linha anterior
-    genero = input(f"Novo gênero [{atual['genero']}]: ").strip() #Idem
+    novo_nome   = nome      if nome      else atual['nome']
+    novo_cache  = float(cache_str) if cache_str else atual['cache']
+    novo_genero = genero    if genero    else atual['genero']
 
-    if nome:
-        novo_nome = nome
-    else:
-        novo_nome = atual['nome']
-
-    if cache_str:
-        novo_cache = float(cache_str)
-    else:
-        novo_cache = atual['cache']
-
-    if genero:
-        novo_genero = genero
-    else:
-        novo_genero = atual['genero']
-
-    artistas[id_artista] = {
-        'nome':   novo_nome,
-        'cache':  novo_cache,
-        'genero': novo_genero
-    }
+    artistas[id_artista] = {'nome': novo_nome, 'cache': novo_cache, 'genero': novo_genero}
+    storage.salvar("artistas", artistas)
     print("✅ Artista atualizado com sucesso!")
-
 
 def excluir_artista():
     print("\n--- EXCLUIR ARTISTA ---")
@@ -171,10 +155,10 @@ def excluir_artista():
         print("Excluindo...")
         sleep(1)
         del artistas[id_artista]
+        storage.salvar("artistas", artistas)
         print("✅ Artista excluído com sucesso!")
     else:
         print("Operação cancelada.")
-
 
 # ──────────────────────────────────────────────
 # MENU PRINCIPAL DO MÓDULO
@@ -212,7 +196,6 @@ def menu_artistas():
             break
         else:
             print("✋👺🚫 Opção inválida!")
-
 
 if __name__ == "__main__":
     menu_artistas()
