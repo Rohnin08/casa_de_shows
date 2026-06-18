@@ -4,13 +4,20 @@ import os
 PASTA = "dados"
 
 def salvar(nome_arquivo, dados):
-    os.makedirs(PASTA, exist_ok=True)
-    with open(f"{PASTA}/{nome_arquivo}.pkl", "wb") as f:
-        pickle.dump(dados, f)
+    try:
+        with open(f"{PASTA}/{nome_arquivo}.dat", "wb") as file:
+            pickle.dump(dados, file)
+    except FileNotFoundError:
+        os.makedirs(PASTA)
+        with open(f"{PASTA}/{nome_arquivo}.dat", "wb") as file:
+            pickle.dump(dados, file)
 
 def carregar(nome_arquivo):
-    caminho = f"{PASTA}/{nome_arquivo}.pkl"
-    if not os.path.exists(caminho):
+    caminho = f"{PASTA}/{nome_arquivo}.dat"
+    try:
+        with  open(caminho, "rb") as file:
+            return pickle.load(file)
+    except FileNotFoundError:
         return {}
-    with open(caminho, "rb") as f:
-        return pickle.load(f)
+    
+

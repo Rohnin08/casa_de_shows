@@ -1,6 +1,7 @@
 from time import sleep
 import modulos.storage as storage
 import modulos.shows as shows
+from modulos.artistas import gerar_id
 import modulos.artistas as artistas
 
 # ──────────────────────────────────────────────
@@ -31,6 +32,7 @@ def obter_nome_show(id_show):
         return "Show Desconhecido"
 
 def exibir_shows_disponiveis():
+    shows_atuais = storage.carregar("shows") #Carrega os shows cadastrados no momento
     print("---Shows Disponiveis---\n")
     for id_ing, ing in bilheteria.items():
         id_show = ing['id_show']
@@ -64,8 +66,9 @@ Disponíveis : {ing['qtd_disponivel']} ingressos
 def cadastrar_ingresso():
     print("--- Cadastro de Ingressos ---")
     print()
+    shows_atuais = storage.carregar("shows")
 
-    if not shows.shows:
+    if not shows_atuais:
         print("Nenhum show cadastrado no sistema. Cadastre um show primeiro!")
         return
 
@@ -75,7 +78,7 @@ def cadastrar_ingresso():
         novo_id = 1
 
     print("Shows disponíveis:")
-    for id_show, show in shows.shows.items():
+    for id_show, show in shows_atuais.items():
         print(f"  {id_show}. {show['nome']}")
     print()
 
@@ -238,7 +241,6 @@ def vender_ingresso():
     confirmar = input(f"\nConfirmar compra de {quantidade} ingressos para '{nome_show}' por R$ {valor_total:.2f}? (sim/não): ").lower()
 
     if confirmar == 'sim':
-        # Bug corrigido: bloco inteiro dentro do if, com caso vendas vazio tratado
         if vendas:
             novo_id_venda = max(vendas.keys()) + 1
         else:
@@ -276,7 +278,11 @@ def menu_bilheteria():
     0. Sair do Modulo
 =========================================
 ''')
-        opcao_bilheteria = int(input("Escolha uma opção: "))
+        try:
+            opcao_bilheteria = int(input("Escolha uma opção: "))
+        except ValueError:
+            print("Valor invalido, por favor tente novamente")
+            continue
 
         if opcao_bilheteria == 1:
             cadastrar_ingresso()

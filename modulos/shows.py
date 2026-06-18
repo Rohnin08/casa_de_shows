@@ -2,6 +2,7 @@ from datetime import date, time
 from time import sleep
 import modulos.storage as storage
 import modulos.artistas as artistas
+from modulos.artistas import gerar_id
 
 # ──────────────────────────────────────────────
 # INICIALIZAÇÃO
@@ -25,13 +26,12 @@ if not shows:
 # CRUD
 # ──────────────────────────────────────────────
 
+
 def cadastrar_show():
+    '''Função de cadastrar show'''
     print("--- Cadastro de Shows ---")
     print()
-    if shows: 
-        novo_id = max(shows.keys()) + 1
-    else:
-        novo_id = 1
+    novo_id = gerar_id()
     nome = input("Nome do show: ")
 
     print("\nArtistas disponíveis:")
@@ -54,9 +54,9 @@ def cadastrar_show():
         else:
             print("Artista não encontrado.")
 
-    hora_inicio  = time(*map(int, input("Horário de início (HH MM): ").split()))
+    hora_inicio = time(*map(int, input("Horário de início (HH MM): ").split()))
     hora_termino = time(*map(int, input("Horário de término (HH MM): ").split()))
-    data         = date(*map(int, input("Data (AAAA MM DD): ").split()))
+    data = date(*map(int, input("Data (AAAA MM DD): ").split()))
 
     shows[novo_id] = {
         'nome': nome,

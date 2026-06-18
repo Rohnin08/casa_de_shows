@@ -6,8 +6,6 @@ import modulos.bilheteria as bilheteria
 
 controle = True
 
-
-
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 

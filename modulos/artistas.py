@@ -35,12 +35,17 @@ def exibir_artista(id_art, dados):
 
 def cadastrar_artista(): 
     print("\n--- CADASTRAR ARTISTA ---")
-    nome   = input("Nome do artista: ")
-    cache  = float(input("Cache do artista: R$ "))
+    nome = input("Nome do artista: ")
+    cache = float(input("Cache do artista: R$ "))
     genero = input("Gênero musical: ")
 
     novo_id = gerar_id()
-    artistas[novo_id] = {'nome': nome, 'cache': cache, 'genero': genero}
+    
+    artistas[novo_id] = {
+        'nome': nome,
+        'cache': cache,
+        'genero': genero}
+    
     storage.salvar("artistas", artistas)
     print(f"\n✅ {nome} cadastrado com sucesso! (ID: {novo_id})")
 
@@ -50,7 +55,7 @@ def exibir_todos():
         return
     print("\n--- LISTA DE ARTISTAS ---")
     for id_art, dados in artistas.items():
-        exibir_artista(id_art, dados)  # corrigido: era _exibir_artista
+        exibir_artista(id_art, dados) 
 
 def buscar_artistas():
     while True:
@@ -119,6 +124,7 @@ def buscar_artistas():
         input("\nPressione Enter para continuar...")
 
 def editar_artista():
+    '''Busca o artista do ID e fornece para ele o um 'menu' para adicionar as novas informações do artistas associado aquele ID'''
     print("\n--- EDITAR ARTISTA ---")
     id_artista = int(input("ID do artista que deseja editar: "))
 
@@ -133,8 +139,12 @@ def editar_artista():
     nome      = input(f"Novo nome [{atual['nome']}]: ").strip()
     cache_str = input(f"Novo cache [{atual['cache']:.2f}]: ").strip()
     genero    = input(f"Novo gênero [{atual['genero']}]: ").strip()
-
-    novo_nome   = nome      if nome      else atual['nome']
+    
+    if nome:
+        novo_nome = nome
+    else:
+        atual['nome']
+        
     novo_cache  = float(cache_str) if cache_str else atual['cache']
     novo_genero = genero    if genero    else atual['genero']
 
@@ -143,6 +153,7 @@ def editar_artista():
     print("✅ Artista atualizado com sucesso!")
 
 def excluir_artista():
+    '''Permite o usuário buscar o artista por meio do 'ID' com o objetivo de excluir. Ele tem um validador simples afim de evitar que o usuário apague sem querer'''
     print("\n--- EXCLUIR ARTISTA ---")
     id_artista = int(input("ID do artista que deseja excluir: "))
 
