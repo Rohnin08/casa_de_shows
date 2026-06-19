@@ -2,6 +2,7 @@ import os
 from time import sleep
 import modulos.artistas as artistas
 import modulos.shows as shows
+import modulos.clientes as clientes
 import modulos.bilheteria as bilheteria
 
 controle = True
@@ -30,38 +31,45 @@ while controle == True:
     0. Sair do Sistema 📤
 ===============================================
 ''')
-    opcao_menu = int(input("Escolha uma opção: "))
+    opcao = int(input("Escolha uma opção: "))
 
     # Modulo de Artistas
     limpar_tela()
-    if opcao_menu == 1:
+    if opcao == 1:
         limpar_tela()
         print("Carregando...")
         sleep(1)
         artistas.menu_artistas()
+    
+    elif opcao == 2:
+        limpar_tela()
+        print("Carregando...")
+        sleep(1)
+        clientes.menu_clientes()
+        
         
     # Modulo de Shows
-    elif opcao_menu == 2:
+    elif opcao == 3:
         limpar_tela()
         print("Carregando...")
         sleep(1)
         shows.menu_shows()
 
     #Modulo Bilheteria
-    elif opcao_menu == 3:
+    elif opcao == 4:
         limpar_tela()
         print("Carregando...")
         sleep(1)
         bilheteria.menu_bilheteria()
     
-    elif opcao_menu == 4:
+    elif opcao == 5:
         limpar_tela()
         print("Carregando...")
         sleep(1)
         limpar_tela()
         pass
 
-    elif opcao_menu == 5:
+    elif opcao == 6:
         limpar_tela()
         print("Carregando...")
         sleep(1)
@@ -69,7 +77,7 @@ while controle == True:
         pass
 
 
-    elif opcao_menu == 0:
+    elif opcao == 0:
         limpar_tela()
         print("Saindo do programa...")
         sleep(1)

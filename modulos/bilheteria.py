@@ -21,6 +21,12 @@ if not bilheteria:
     }
     storage.salvar("bilheteria", bilheteria)
 
+if not vendas:
+    vendas = {
+
+    }
+    storage.salvar("vendas", vendas)
+
 # ──────────────────────────────────────────────
 # HELPERS
 # ──────────────────────────────────────────────
@@ -279,22 +285,22 @@ def menu_bilheteria():
 =========================================
 ''')
         try:
-            opcao_bilheteria = int(input("Escolha uma opção: "))
+            opcao = int(input("Escolha uma opção: "))
         except ValueError:
             print("Valor invalido, por favor tente novamente")
             continue
 
-        if opcao_bilheteria == 1:
+        if opcao == 1:
             cadastrar_ingresso()
-        elif opcao_bilheteria == 2:
+        elif opcao == 2:
             buscar_bilheteria()
-        elif opcao_bilheteria == 3:
+        elif opcao == 3:
             editar_ingresso()
-        elif opcao_bilheteria == 4:
+        elif opcao == 4:
             excluir_ingresso()
-        elif opcao_bilheteria == 5:
+        elif opcao == 5:
             vender_ingresso()
-        elif opcao_bilheteria == 0:
+        elif opcao == 0:
             print("Saindo do modulo...")
             sleep(1)
             break

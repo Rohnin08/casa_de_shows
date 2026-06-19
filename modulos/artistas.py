@@ -1,5 +1,6 @@
 from time import sleep
 import modulos.storage as storage
+import modulos.geral as g
 
 # ──────────────────────────────────────────────
 # INICIALIZAÇÃO
@@ -21,8 +22,8 @@ if not artistas:
 
 def gerar_id():
     """Retorna um ID único mesmo após deleções."""
-    if artistas:
-        return max(artistas.keys()) + 1
+    if artistas: #Verifica se o arquivo está vazio
+        return max(artistas.keys()) + 1 # Se for True returna o maior id do dicionario e depois
     else:
         return 1
 
@@ -39,7 +40,7 @@ def cadastrar_artista():
     cache = float(input("Cache do artista: R$ "))
     genero = input("Gênero musical: ")
 
-    novo_id = gerar_id()
+    novo_id = geral.gerar_id(artistas)
     
     artistas[novo_id] = {
         'nome': nome,
@@ -80,7 +81,7 @@ def buscar_artistas():
                 print("❌ Artista não encontrado.")
 
         elif opcao == 2:
-            termo = input("Nome (ou parte dele): ").lower()
+            termo = input("Nome (ou parte dele): ").lower().strip
             resultado = []
             for i, d in artistas.items():
                 if termo in d['nome'].lower():
@@ -188,8 +189,11 @@ def menu_artistas():
   5. Excluir Artista
   0. Sair do Módulo
 =========================================''')
-
-        opcao = int(input("Escolha uma opção: "))
+        try:
+            opcao = int(input("Escolha uma opção: "))
+        except ValueError:
+            print("Valor invalido, por favor tente novamente")
+            continue
 
         if opcao == 1:
             cadastrar_artista()

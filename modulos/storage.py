@@ -15,7 +15,7 @@ def salvar(nome_arquivo, dados):
 def carregar(nome_arquivo):
     caminho = f"{PASTA}/{nome_arquivo}.dat"
     try:
-        with  open(caminho, "rb") as file:
+        with open(caminho, "rb") as file:
             return pickle.load(file)
     except FileNotFoundError:
         return {}

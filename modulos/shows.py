@@ -2,7 +2,7 @@ from datetime import date, time
 from time import sleep
 import modulos.storage as storage
 import modulos.artistas as artistas
-from modulos.artistas import gerar_id
+import modulos.geral as g
 
 # ──────────────────────────────────────────────
 # INICIALIZAÇÃO
@@ -31,7 +31,7 @@ def cadastrar_show():
     '''Função de cadastrar show'''
     print("--- Cadastro de Shows ---")
     print()
-    novo_id = gerar_id()
+    novo_id = g.gerar_id(shows)
     nome = input("Nome do show: ")
 
     print("\nArtistas disponíveis:")
@@ -216,7 +216,11 @@ def menu_shows():
     0. Sair do Módulo
 =========================================
 ''')
-        opcao = int(input("Escolha uma opção: "))
+        try:
+            opcao = int(input("Escolha uma opção: "))
+        except ValueError:
+            print("Valor invalido, por favor tente novamente")
+            continue
 
         if opcao == 1:
             cadastrar_show()
