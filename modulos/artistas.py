@@ -40,7 +40,7 @@ def cadastrar_artista():
     cache = float(input("Cache do artista: R$ "))
     genero = input("Gênero musical: ")
 
-    novo_id = geral.gerar_id(artistas)
+    novo_id = g.gerar_id(artistas)
     
     artistas[novo_id] = {
         'nome': nome,
@@ -71,7 +71,10 @@ def buscar_artistas():
   0. Voltar
 =========================================''')
 
-        opcao = int(input("Qual a opção? "))
+        try:
+            opcao = int(input("Qual a opção? "))
+        except ValueError:
+            print("❌Valor invalido, por favor tente novamente")
 
         if opcao == 1:
             id_art = int(input("ID do artista: "))
@@ -120,7 +123,7 @@ def buscar_artistas():
             break
 
         else:
-            print("⚠️  Opção inválida.")
+            print("⚠️ Opção inválida.")
 
         input("\nPressione Enter para continuar...")
 
@@ -192,7 +195,7 @@ def menu_artistas():
         try:
             opcao = int(input("Escolha uma opção: "))
         except ValueError:
-            print("Valor invalido, por favor tente novamente")
+            print("❌Valor invalido, por favor tente novamente")
             continue
 
         if opcao == 1:

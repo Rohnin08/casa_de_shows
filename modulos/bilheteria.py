@@ -1,8 +1,8 @@
 from time import sleep
 import modulos.storage as storage
 import modulos.shows as shows
-from modulos.artistas import gerar_id
 import modulos.artistas as artistas
+import modulos.geral as g
 
 # ──────────────────────────────────────────────
 # INICIALIZAÇÃO
@@ -78,10 +78,7 @@ def cadastrar_ingresso():
         print("Nenhum show cadastrado no sistema. Cadastre um show primeiro!")
         return
 
-    if bilheteria:
-        novo_id = max(bilheteria.keys()) + 1
-    else:
-        novo_id = 1
+    novo_id = g.gerar_id()
 
     print("Shows disponíveis:")
     for id_show, show in shows_atuais.items():
@@ -116,21 +113,28 @@ def buscar_bilheteria():
   3. Buscar por Preço Máximo
   0. Voltar ao modulo de bilheteria
 ''')
-        opcao = int(input("Qual a opção? "))
+        # Esse try/expect verifica se algo não é um 'int'. Isso evita do usuário digitar uma letra ou um float e o código dar erro. 🥸
+        try:
+            opcao = int(input("Qual a opção? "))
+        except ValueError:
+            print("Valor Invalido, por favor tente novamente")
+            continue
 
+        # Buscar por ID do ingresso
         if opcao == 1:
-            id_ingresso = int(input("ID do ingresso: "))
-            if id_ingresso in bilheteria:
-                ingresso = bilheteria[id_ingresso]
-                id_show = ingresso['id_show']
+            id_ing = int(input("ID do ingresso: "))
+            encontrou = False
+            if id_ing in bilheteria:
+                ing = bilheteria[id_ing]
+                id_show = ing['id_show']
                 nome_show = obter_nome_show(id_show)
-                parar = " "
-                while parar != "sim":
-                    print(f"\nID Ingresso: {id_ingresso}\nShow: {nome_show}\nPreço: R${ingresso['preco']:.2f}\nQuantidade: {ingresso['qtd_disponivel']}\n")
-                    parar = input("Fechar tela (digite 'sim' para sair)? ").lower()
-            else:
-                print("Ingresso não encontrado")
+                print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
+                encontrou = True
+            if not encontrou:
+                print("❌Nenhum ingresso com esse ID foi encontrado.")
+            input("\nPrecione Enter para continuar... ")
 
+        # Busca por Show
         elif opcao == 2:
             id_show_busca = int(input("Digite o ID do show: "))
             encontrou = False
@@ -140,9 +144,10 @@ def buscar_bilheteria():
                     print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
                     encontrou = True
             if not encontrou:
-                print("Nenhum ingresso vinculado a este ID de show.")
+                print("❌Nenhum ingresso vinculado a este ID de show.")
             input("\nPressione Enter para continuar...")
 
+        # Busca por preço
         elif opcao == 3:
             preco_max = float(input("Exibir ingressos até qual preço? R$ "))
             encontrou = False
@@ -152,7 +157,7 @@ def buscar_bilheteria():
                     print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
                     encontrou = True
             if not encontrou:
-                print(f"Nenhum ingresso encontrado abaixo de R$ {preco_max:.2f}")
+                print(f"❌Nenhum ingresso encontrado abaixo de R$ {preco_max:.2f}")
             input("\nPressione Enter para continuar...")
 
         elif opcao == 0:
@@ -160,7 +165,6 @@ def buscar_bilheteria():
 
         else:
             print("Opção desconhecida")
-
 
 def editar_ingresso():
     print("---Editor de Ingressos---")
@@ -172,7 +176,7 @@ def editar_ingresso():
         return
 
     print("Shows disponíveis:")
-    for id_sh, sh in shows.shows.items():
+    for id_sh, sh in shows.shows.items(): #Lista todos os shows que estão dentro do dicionario shows
         print(f"  {id_sh}. {sh['nome']}")
     print()
 

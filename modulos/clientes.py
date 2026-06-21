@@ -1,6 +1,7 @@
 from modulos.artistas import gerar_id
 import modulos.storage as storage
 import modulos.geral as g
+from time import sleep
 
 # ──────────────────────────────────────────────
 # INICIALIZAÇÃO
@@ -15,29 +16,30 @@ if not clientes:
 
 ############
 def exibir_cliente(id_cli, dados):
-    print(f"  ID: {id_cli} | Nome: {dados['nome']} | CPF: R${dados['cpf']:.2f} | Telefone: {dados['telefone']}")    
+    print(f"ID: {id_cli}\nNome: {dados['nome']}\nHistórico de compras: {dados['historico_compras']}")
 
 # ──────────────────────────────────────────────
 # CRUD
 # ──────────────────────────────────────────────
 
+# Cadastro de CLIENTES
 def cadastrar_cliente():
     print("\n --- CADASTRAR CLIENTE")
     nome = str(input("Nome do Cliente: "))
-    cpf = str(input("CPF do Cliente: "))
-    telefone = str(input("Telefone do Cliente: "))
 
     novo_id = g.gerar_id(clientes)
 
     clientes[novo_id] = {
         'nome': nome,
-        'cpf': cpf,
-        'telefone':telefone,
+        'status_cliente':True,
         'historico_compras': []
         }
+    
     storage.salvar("clientes", clientes)
     print(f"\nCliente: {nome} cadastrado com sucessso! (ID: {novo_id})")
 
+
+# Busca de CLIENTES
 def buscar_cliente():
     while True: 
         print('''
@@ -46,7 +48,7 @@ def buscar_cliente():
 =========================================
   1. Buscar por ID
   2. Buscar por Nome
-  3. Buscar por CPF
+  3. Buscar histórico de vendas
   0. Voltar
 =========================================''')
         
@@ -55,6 +57,7 @@ def buscar_cliente():
         except ValueError:
             print("Valor Invalido, por favor tente novamente")
             continue
+        
         if opcao == 1:
             id_cli = int(input("ID do cliente: "))
             if id_cli in clientes:
@@ -65,36 +68,89 @@ def buscar_cliente():
         elif opcao == 2:
             termo = input("Nome (Ou parte dele:): ").lower().strip()
             resultado = []
-            for i, d in clientes.items():
-                if termo in d ['nome'].lower():
-                    resultado.append((i, d))
+            for id_cli, dados in clientes.items():
+                if termo in dados ['nome'].lower():
+                    resultado.append((id_cli, dados))
             if resultado:
                 for id_cli, dados in resultado:
                     exibir_cliente(id_cli, dados)
-                else:
-                    print("❌Nenhum cliente encontrado com este nome.")
-
-        elif opcao == 3:
-            genero_busca = input("Gênero musical: ").lower()
-            resultado = []
-            for i, d in clientes.items():
-                if genero_busca == d['genero'].lower():
-                    resultado.append((i, d))
-            if resultado:
-                for id_art, dados in resultado:
-                    exibir_cliente(id_art, dados)
             else:
-                print("❌ Nenhum Cliente encontrado neste CPF.")
+                print("❌Nenhum cliente encontrado com este nome.")
+        
+        elif opcao == 3:
+            pass
 
-
-
+        elif opcao == 0:
+            print("Saindo...")
+            sleep(1)
+            break
 
 def listar_clientes():
     pass
 
-def editar_clientes():
-    pass
+def editar_cliente():
+    '''Busca o artista do ID e fornece para ele o um 'menu' para adicionar as novas informações do cliente associado aquele ID'''
+    print("\n--- EDITAR CLIENTE ---")
+    id_cli = int(input("ID do cliente que deseja editar: "))
 
-def excluir_clientes():
-    pass
+    if id_cli not in clientes:
+        print("❌ Cliente não encontrado.")
+        return
 
+    atual = clientes[id_cli]
+    print(f"Editando: {atual['nome']}")
+    print("(Deixe em branco para manter o valor atual)\n")
+
+    nome      = input(f"Novo nome [{atual['nome']}]: ").strip()
+
+    if nome:
+        novo_nome = nome
+    else:
+        atual['nome']
+        
+    clientes[id_cli] = {'nome': novo_nome}
+    storage.salvar("clientes", clientes)
+    print("✅ Cliente atualizado com sucesso!")
+
+
+def excluir_cliente():
+    pass
+    
+
+def menu_clientes():
+    while True:
+        print('''
+=========================================
+          Módulo de Artistas
+=========================================
+  1. Cadastrar Cliente
+  2. Buscar Cliente
+  3. Editar Cliente
+  4. Desabilitar Cliente
+  0. Sair do Módulo
+=========================================''')
+        try:
+            opcao = int(input("Escolha uma opção: "))
+        except ValueError:
+            print("❌Valor invalido, por favor tente novamente")
+            continue
+
+        if opcao == 1:
+            cadastrar_cliente()
+        elif opcao == 2:
+            pass
+        elif opcao == 3:
+            buscar_cliente()
+        elif opcao == 4:
+            editar_cliente()
+        elif opcao == 5:
+            excluir_cliente()
+        elif opcao == 0:
+            print("Saindo do módulo...")
+            sleep(1)
+            break
+        else:
+            print("✋👺🚫 Opção inválida!")
+
+if __name__ == "__main__":
+    menu_clientes()

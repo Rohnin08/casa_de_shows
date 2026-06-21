@@ -19,22 +19,29 @@ while controle == True:
          ♬ ♪ MUSICAL BASEMENT ♬ ♪
 ==============================================
     1. Artistas 👨‍🎤
+          
+    2. Clientes 🧑
 
-    2. Shows 🎤
+    3. Shows 🎤
 
-    3. Bilheteria 🎫
+    4. Bilheteria 🎫
+        
+    5. Relatorios de Vendas 📋 
     
-    4. Relatorios de Vendas 💹
-    
-    5. Sobre o sistema 🥸
+    6. Sobre o sistema 🥸
 
     0. Sair do Sistema 📤
 ===============================================
 ''')
-    opcao = int(input("Escolha uma opção: "))
+    try:
+        opcao = int(input("Escolha uma opção: "))
+    except ValueError:
+        print("Valor invalido, por favor tente novamente")
+        continue
 
     # Modulo de Artistas
     limpar_tela()
+
     if opcao == 1:
         limpar_tela()
         print("Carregando...")
@@ -46,7 +53,6 @@ while controle == True:
         print("Carregando...")
         sleep(1)
         clientes.menu_clientes()
-        
         
     # Modulo de Shows
     elif opcao == 3:

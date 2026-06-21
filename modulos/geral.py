@@ -5,6 +5,6 @@ def gerar_id(colecao: dict) -> int:
     if colecao: #Verifica se o arquivo está vazio
         return max(colecao.keys()) + 1 # Se for True returna o maior id do dicionario e depois
     else:
-        return 1
+        return 1 
 
 
