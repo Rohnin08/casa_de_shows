@@ -102,7 +102,7 @@ def cadastrar_ingresso():
         print("Show não encontrado. Operação cancelada.")
 
 
-def buscar_bilheteria():
+def buscar_ingresso():
     while True:
         print('''
 ---------------------------------------      
@@ -111,7 +111,7 @@ def buscar_bilheteria():
   1. Buscar por ID do Ingresso
   2. Buscar por ID do Show
   3. Buscar por Preço Máximo
-  0. Voltar ao modulo de bilheteria
+  0. Voltar ao modulo de ingressos
 ''')
         # Esse try/expect verifica se algo não é um 'int'. Isso evita do usuário digitar uma letra ou um float e o código dar erro. 🥸
         try:
@@ -269,22 +269,17 @@ def vender_ingresso():
     else:
         print("❌ Operação cancelada")
 
-
-# ──────────────────────────────────────────────
-# MENU PRINCIPAL DO MÓDULO
-# ──────────────────────────────────────────────
-
-def menu_bilheteria():
+def menu_ingressos():
     while True:
+
         print('''
 =========================================
-          Modulo de Bilheteria
+          Ingressos
 =========================================
     1. Cadastrar Ingresso
     2. Listar/Buscar Ingressos
     3. Editar Ingressos
-    4. Deletar Ingressos
-    5. Computar vendas
+    4. Excluir Ingressos
     0. Sair do Modulo
 =========================================
 ''')
@@ -297,13 +292,79 @@ def menu_bilheteria():
         if opcao == 1:
             cadastrar_ingresso()
         elif opcao == 2:
-            buscar_bilheteria()
+            buscar_ingresso()
         elif opcao == 3:
             editar_ingresso()
         elif opcao == 4:
             excluir_ingresso()
-        elif opcao == 5:
-            vender_ingresso()
+        elif opcao == 0:
+            print("Saindo...")
+            sleep(1)
+            break
+
+def menu_vendas():
+     while True:
+
+        print('''
+=========================================
+          Ingressos
+=========================================
+    1. Cadastrar Ingresso
+    2. Listar/Buscar Ingressos
+    3. Editar Ingressos
+    4. Excluir Ingressos
+    0. Sair do Modulo
+=========================================
+''')
+        try:
+            opcao = int(input("Escolha uma opção: "))
+        except ValueError:
+            print("Valor invalido, por favor tente novamente")
+            continue
+
+        if opcao == 1:
+            cadastrar_ingresso()
+        elif opcao == 2:
+            buscar_ingresso()
+        elif opcao == 3:
+            editar_ingresso()
+        elif opcao == 4:
+            excluir_ingresso()
+        elif opcao == 0:
+            print("Saindo...")
+            sleep(1)
+            break
+
+
+
+# ──────────────────────────────────────────────
+# MENU PRINCIPAL DO MÓDULO
+# ──────────────────────────────────────────────
+
+def menu_bilheteria():
+    while True:
+        print('''
+=========================================
+        Modulo de Bilheteria 
+=========================================
+    1. INGRESSOS 🎫
+
+    2. VENDAS 💸
+              
+    0. SAIR DO MODULO 📤
+=========================================
+''')
+        try:
+            opcao = int(input("Escolha uma opção: "))
+        except ValueError:
+            print("Valor invalido, por favor tente novamente")
+            continue
+
+        if opcao == 1:
+            menu_ingressos()
+        elif opcao == 2:
+            menu_vendas()
+        
         elif opcao == 0:
             print("Saindo do modulo...")
             sleep(1)

@@ -86,9 +86,9 @@ def buscar_artistas():
         elif opcao == 2:
             termo = input("Nome (ou parte dele): ").lower().strip
             resultado = []
-            for i, d in artistas.items():
-                if termo in d['nome'].lower():
-                    resultado.append((i, d))
+            for id_art, dados in artistas.items():
+                if termo in dados['nome'].lower():
+                    resultado.append((id_art, dados))
             if resultado:
                 for id_art, dados in resultado:
                     exibir_artista(id_art, dados)  # corrigido
@@ -98,9 +98,9 @@ def buscar_artistas():
         elif opcao == 3:
             genero_busca = input("Gênero musical: ").lower()
             resultado = []
-            for i, d in artistas.items():
-                if genero_busca == d['genero'].lower():
-                    resultado.append((i, d))
+            for id_art, dados in artistas.items():
+                if genero_busca == dados['genero'].lower():
+                    resultado.append((id_art, dados))
             if resultado:
                 for id_art, dados in resultado:
                     exibir_artista(id_art, dados)
@@ -110,9 +110,9 @@ def buscar_artistas():
         elif opcao == 4:
             cache_limite = float(input("Exibir artistas com cache até: R$ "))
             resultado = []
-            for i, d in artistas.items():
-                if d['cache'] <= cache_limite:
-                    resultado.append((i, d))
+            for id_art, dados in artistas.items():
+                if dados['cache'] <= cache_limite:
+                    resultado.append((id_art, dados))
             if resultado:
                 for id_art, dados in resultado:
                     exibir_artista(id_art, dados)
@@ -140,9 +140,9 @@ def editar_artista():
     print(f"Editando: {atual['nome']} | Cache: R${atual['cache']:.2f} | Gênero: {atual['genero']}")
     print("(Deixe em branco para manter o valor atual)\n")
 
-    nome      = input(f"Novo nome [{atual['nome']}]: ").strip()
+    nome = input(f"Novo nome [{atual['nome']}]: ").strip()
     cache_str = input(f"Novo cache [{atual['cache']:.2f}]: ").strip()
-    genero    = input(f"Novo gênero [{atual['genero']}]: ").strip()
+    genero = input(f"Novo gênero [{atual['genero']}]: ").strip()
     
     if nome:
         novo_nome = nome
