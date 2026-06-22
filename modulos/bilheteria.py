@@ -78,7 +78,7 @@ def cadastrar_ingresso():
         print("Nenhum show cadastrado no sistema. Cadastre um show primeiro!")
         return
 
-    novo_id = g.gerar_id()
+    novo_id = g.gerar_id(bilheteria)
 
     print("Shows disponíveis:")
     for id_show, show in shows_atuais.items():
@@ -91,13 +91,19 @@ def cadastrar_ingresso():
         preco = float(input("Preço do ingresso: "))
         qtd_disponivel = int(input("Quantidade de ingressos disponíveis: "))
 
-        bilheteria[novo_id] = {
-            'id_show': id_show,
-            'preco': preco,
-            'qtd_disponivel': qtd_disponivel
-        }
-        storage.salvar("bilheteria", bilheteria)
-        print(f"\nIngresso para o show '{obter_nome_show(id_show)}' cadastrado com sucesso!")
+        ids_cadastrados = [i['id_show'] for i in bilheteria.values()]
+
+        if id_show not in ids_cadastrados:
+            bilheteria[novo_id] = {
+                'id_show': id_show,
+                'preco': preco,
+                'qtd_disponivel': qtd_disponivel
+            }
+            storage.salvar("bilheteria", bilheteria)
+            print(f"\nIngresso para o show '{obter_nome_show(id_show)}' cadastrado com sucesso!")
+
+        else:
+            print("Esse show já possui ingressos cadastrados, por favor tente com outro show")
     else:
         print("Show não encontrado. Operação cancelada.")
 

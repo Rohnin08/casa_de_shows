@@ -140,17 +140,24 @@ def editar_artista():
     print(f"Editando: {atual['nome']} | Cache: R${atual['cache']:.2f} | Gênero: {atual['genero']}")
     print("(Deixe em branco para manter o valor atual)\n")
 
-    nome = input(f"Novo nome [{atual['nome']}]: ").strip()
-    cache_str = input(f"Novo cache [{atual['cache']:.2f}]: ").strip()
-    genero = input(f"Novo gênero [{atual['genero']}]: ").strip()
+    novo_nome = input(f"Novo nome [{atual['nome']}]: ").strip()
+    novo_cache_str = input(f"Novo cache [{atual['cache']:.2f}]: ").strip()
+    novo_genero = input(f"Novo gênero [{atual['genero']}]: ").strip()
     
-    if nome:
-        novo_nome = nome
+    if novo_nome:
+        nome = novo_nome
     else:
-        atual['nome']
+        nome = atual['nome']
         
-    novo_cache  = float(cache_str) if cache_str else atual['cache']
-    novo_genero = genero    if genero    else atual['genero']
+    if novo_cache_str:
+        novo_cache  = float(novo_cache_str)
+    else: 
+        novo_nome = atual['cache']
+        
+    if novo_genero:
+        genero = novo_genero
+    else:
+        genero = atual['genero']
 
     artistas[id_artista] = {'nome': novo_nome, 'cache': novo_cache, 'genero': novo_genero}
     storage.salvar("artistas", artistas)
