@@ -10,22 +10,15 @@ artistas = storage.carregar("artistas")
 
 if not artistas:
     artistas = {
-        1: {'nome': 'Slipknot',    'cache': 1000.00, 'genero': 'Metal'},
-        2: {'nome': 'Linkin Park', 'cache': 1500.00, 'genero': 'Nu Metal'},
-        3: {'nome': 'Limp Bizkit', 'cache': 1200.00, 'genero': 'Nu Metal'}
+        1: {'nome': 'Slipknot',    'cache': 1000.00, 'genero': 'Metal', 'cadastrado':True},
+        2: {'nome': 'Linkin Park', 'cache': 1500.00, 'genero': 'Nu Metal', 'cadastrado':True},
+        3: {'nome': 'Limp Bizkit', 'cache': 1200.00, 'genero': 'Nu Metal', 'cadastrado':True}
     }
     storage.salvar("artistas", artistas)
 
 # ──────────────────────────────────────────────
 # HELPERS
 # ──────────────────────────────────────────────
-
-def gerar_id():
-    """Retorna um ID único mesmo após deleções."""
-    if artistas: #Verifica se o arquivo está vazio
-        return max(artistas.keys()) + 1 # Se for True returna o maior id do dicionario e depois
-    else:
-        return 1
 
 def exibir_artista(id_art, dados):
     print(f"  ID: {id_art} | Nome: {dados['nome']} | Cache: R${dados['cache']:.2f} | Gênero: {dados['genero']}")
@@ -45,7 +38,9 @@ def cadastrar_artista():
     artistas[novo_id] = {
         'nome': nome,
         'cache': cache,
-        'genero': genero}
+        'genero': genero,
+        'cadastrado':True
+        }
     
     storage.salvar("artistas", artistas)
     print(f"\n✅ {nome} cadastrado com sucesso! (ID: {novo_id})")
@@ -73,53 +68,70 @@ def buscar_artistas():
 
         try:
             opcao = int(input("Qual a opção? "))
+
         except ValueError:
             print("❌Valor invalido, por favor tente novamente")
+            continue
 
         if opcao == 1:
             id_art = int(input("ID do artista: "))
-            if id_art in artistas:
-                exibir_artista(id_art, artistas[id_art])  # corrigido
+
+            if id_art in artistas and artistas[id_art]['cadastrado'] == True:
+                exibir_artista(id_art, artistas[id_art])
+
             else:
                 print("❌ Artista não encontrado.")
 
         elif opcao == 2:
-            termo = input("Nome (ou parte dele): ").lower().strip
+            termo = input("Nome (ou parte dele): ").lower().strip()
             resultado = []
+
             for id_art, dados in artistas.items():
-                if termo in dados['nome'].lower():
+                if termo in dados['nome'].lower() and artistas[id_art]['cadastrado'] == True:
                     resultado.append((id_art, dados))
+
             if resultado:
                 for id_art, dados in resultado:
-                    exibir_artista(id_art, dados)  # corrigido
+                    exibir_artista(id_art, dados) 
+
             else:
                 print("❌ Nenhum artista encontrado com este nome.")
 
         elif opcao == 3:
             genero_busca = input("Gênero musical: ").lower()
-            resultado = []
+
+            resultado = [] #Lista para armazenar o que ele achar com aquela informação
+
             for id_art, dados in artistas.items():
-                if genero_busca == dados['genero'].lower():
-                    resultado.append((id_art, dados))
+                if genero_busca == dados['genero'].lower() and artistas[id_art]['cadastrado'] == True: # verifica se existe o genero e se o artista que tem aquele género está ativo.
+                    resultado.append((id_art, dados)) #Adiciona ao final da lista tudo que ele for achando
+
             if resultado:
                 for id_art, dados in resultado:
                     exibir_artista(id_art, dados)
+
             else:
                 print("❌ Nenhum artista encontrado neste gênero.")
 
         elif opcao == 4:
             cache_limite = float(input("Exibir artistas com cache até: R$ "))
+
             resultado = []
+
             for id_art, dados in artistas.items():
-                if dados['cache'] <= cache_limite:
+                if dados['cache'] <= cache_limite and artistas[id_art]['cadastrado'] == True:
                     resultado.append((id_art, dados))
+
             if resultado:
                 for id_art, dados in resultado:
                     exibir_artista(id_art, dados)
+
             else:
                 print("❌ Nenhum artista encontrado nessa faixa de cache.")
 
         elif opcao == 0:
+            print("Saindo...")
+            sleep(1)
             break
 
         else:
@@ -130,13 +142,13 @@ def buscar_artistas():
 def editar_artista():
     '''Busca o artista do ID e fornece para ele o um 'menu' para adicionar as novas informações do artistas associado aquele ID'''
     print("\n--- EDITAR ARTISTA ---")
-    id_artista = int(input("ID do artista que deseja editar: "))
+    id_art = int(input("ID do artista que deseja editar: "))
 
-    if id_artista not in artistas:
+    if id_art not in artistas or artistas[id_art]['cadastrado'] == False:
         print("❌ Artista não encontrado.")
         return
 
-    atual = artistas[id_artista]
+    atual = artistas[id_art]
     print(f"Editando: {atual['nome']} | Cache: R${atual['cache']:.2f} | Gênero: {atual['genero']}")
     print("(Deixe em branco para manter o valor atual)\n")
 
@@ -150,35 +162,35 @@ def editar_artista():
         nome = atual['nome']
         
     if novo_cache_str:
-        novo_cache  = float(novo_cache_str)
+        cache  = float(novo_cache_str)
     else: 
-        novo_nome = atual['cache']
+        cache = atual['cache']
         
     if novo_genero:
         genero = novo_genero
     else:
         genero = atual['genero']
 
-    artistas[id_artista] = {'nome': novo_nome, 'cache': novo_cache, 'genero': novo_genero}
+    artistas[id_art] = {'nome': nome, 'cache': cache, 'genero': genero, 'cadastrado': True}
     storage.salvar("artistas", artistas)
     print("✅ Artista atualizado com sucesso!")
 
 def excluir_artista():
     '''Permite o usuário buscar o artista por meio do 'ID' com o objetivo de excluir. Ele tem um validador simples afim de evitar que o usuário apague sem querer'''
     print("\n--- EXCLUIR ARTISTA ---")
-    id_artista = int(input("ID do artista que deseja excluir: "))
+    id_art = int(input("ID do artista que deseja excluir: "))
 
-    if id_artista not in artistas:
+    if id_art not in artistas or artistas[id_art]['cadastrado'] == False:
         print("❌ Artista não encontrado.")
         return
 
-    confirmar = input(f"Tem certeza que quer deletar '{artistas[id_artista]['nome']}'? (sim/não): ").lower()
+    confirmar = input(f"Tem certeza que quer deletar '{artistas[id_art]['nome']}'? (sim/não): ").lower()
     if confirmar == "sim":
-        print("Excluindo...")
+        print("Desabilitando...")
         sleep(1)
-        del artistas[id_artista]
+        artistas[id_art]['cadastrado'] = False
         storage.salvar("artistas", artistas)
-        print("✅ Artista excluído com sucesso!")
+        print("✅ Artista Desabilitado com sucesso!")
     else:
         print("Operação cancelada.")
 

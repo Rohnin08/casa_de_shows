@@ -1,4 +1,3 @@
-from modulos.artistas import gerar_id
 import modulos.storage as storage
 import modulos.geral as g
 from time import sleep
@@ -31,7 +30,7 @@ def cadastrar_cliente():
 
     clientes[novo_id] = {
         'nome': nome,
-        'status_cliente':True,
+        'cadastrado':True,
         'historico_compras': []
         }
     
@@ -60,7 +59,7 @@ def buscar_cliente():
         
         if opcao == 1:
             id_cli = int(input("ID do cliente: "))
-            if id_cli in clientes:
+            if id_cli in clientes and clientes[id_cli]['cadastrado'] == True:
                 exibir_cliente(id_cli, clientes[id_cli])
             else:
                 print("❌Cliente não encontrado.")
@@ -69,7 +68,7 @@ def buscar_cliente():
             termo = input("Nome (Ou parte dele:): ").lower().strip()
             resultado = []
             for id_cli, dados in clientes.items():
-                if termo in dados ['nome'].lower():
+                if termo in dados ['nome'].lower() and clientes[id_cli]['cadastrado'] == True:
                     resultado.append((id_cli, dados))
             if resultado:
                 for id_cli, dados in resultado:
@@ -101,20 +100,36 @@ def editar_cliente():
     print(f"Editando: {atual['nome']}")
     print("(Deixe em branco para manter o valor atual)\n")
 
-    nome      = input(f"Novo nome [{atual['nome']}]: ").strip()
+    novo_nome = input(f"Novo nome [{atual['nome']}]: ").strip()
 
-    if nome:
-        novo_nome = nome
+    if novo_nome:
+        nome = novo_nome
     else:
         atual['nome']
         
-    clientes[id_cli] = {'nome': novo_nome}
+    clientes[id_cli] = {'nome': nome}
     storage.salvar("clientes", clientes)
     print("✅ Cliente atualizado com sucesso!")
 
 
 def excluir_cliente():
-    pass
+    '''Permite o usuário buscar um cliente por meio do 'ID' com o objetivo de 'excluir'. Ele tem um validador simples afim de evitar que o usuário apague sem querer'''
+    print("\n--- EXCLUIR ARTISTA ---")
+    id_cli = int(input("ID do artista que deseja excluir: "))
+
+    if id_cli not in clientes or clientes[id_cli]['cadastrado'] == False:
+        print("❌ Artista não encontrado.")
+        return
+
+    confirmar = input(f"Tem certeza que quer deletar '{clientes[id_cli]['nome']}'? (sim/não): ").lower()
+    if confirmar == "sim":
+        print("Desabilitando...")
+        sleep(1)
+        clientes[id_cli]['cadastrado'] = False
+        storage.salvar("clientes", clientes)
+        print("✅ Cliente Desabilitado com sucesso!")
+    else:
+        print("Operação cancelada.")
     
 
 def menu_clientes():
