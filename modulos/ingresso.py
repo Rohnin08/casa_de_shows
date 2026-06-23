@@ -8,17 +8,18 @@ import modulos.geral as g
 # INICIALIZAÇÃO
 # ──────────────────────────────────────────────
 
-bilheteria = storage.carregar("bilheteria")
+ingressos = storage.carregar("ingressos")
 
-if not bilheteria:
-    bilheteria = {
+if not ingressos:
+    ingressos = {
         1: {
             'id_show': 1,
             'preco': 150.00,
             'qtd_disponivel': 500
         }
     }
-    storage.salvar("bilheteria", bilheteria)
+    storage.salvar("ingressos", ingressos)
+
 
 # ──────────────────────────────────────────────
 # HELPERS
@@ -31,9 +32,8 @@ def obter_nome_show(id_show):
         return "Show Desconhecido"
 
 def exibir_shows_disponiveis():
-    shows_atuais = storage.carregar("shows") #Carrega os shows cadastrados no momento
     print("---Shows Disponiveis---\n")
-    for id_ing, ing in bilheteria.items():
+    for id_ing, ing in ingressos.items():
         id_show = ing['id_show']
         if id_show not in shows.shows:
             continue
@@ -71,7 +71,7 @@ def cadastrar_ingresso():
         print("Nenhum show cadastrado no sistema. Cadastre um show primeiro!")
         return
 
-    novo_id = g.gerar_id(bilheteria)
+    novo_id = g.gerar_id(ingressos)
 
     print("Shows disponíveis:")
     for id_show, show in shows_atuais.items():
@@ -80,19 +80,20 @@ def cadastrar_ingresso():
 
     id_show = int(input("ID do show que deseja associar a este ingresso: "))
 
-    if id_show in shows.shows:
+    if id_show in shows.shows and shows.shows[id_show]['cadastrado']:
         preco = float(input("Preço do ingresso: "))
         qtd_disponivel = int(input("Quantidade de ingressos disponíveis: "))
 
-        ids_cadastrados = [i['id_show'] for i in bilheteria.values()]
+        ids_cadastrados = [i['id_show'] for i in ingressos.values()]
 
         if id_show not in ids_cadastrados:
-            bilheteria[novo_id] = {
+            ingressos[novo_id] = {
                 'id_show': id_show,
                 'preco': preco,
-                'qtd_disponivel': qtd_disponivel
+                'qtd_disponivel': qtd_disponivel,
+                'cadastrado': True
             }
-            storage.salvar("bilheteria", bilheteria)
+            storage.salvar("ingressos", ingressos)
             print(f"\nIngresso para o show '{obter_nome_show(id_show)}' cadastrado com sucesso!")
 
         else:
@@ -126,8 +127,8 @@ def buscar_ingresso():
         if opcao == 1:
             id_ing = int(input("ID do ingresso: "))
             encontrou = False
-            if id_ing in bilheteria:
-                ing = bilheteria[id_ing]
+            if id_ing in ingressos:
+                ing = ingressos[id_ing]
                 id_show = ing['id_show']
                 nome_show = obter_nome_show(id_show)
                 print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
@@ -140,7 +141,7 @@ def buscar_ingresso():
         elif opcao == 2:
             id_show_busca = int(input("Digite o ID do show: "))
             encontrou = False
-            for id_ing, ing in bilheteria.items():
+            for id_ing, ing in ingressos.items():
                 if ing['id_show'] == id_show_busca:
                     nome_show = obter_nome_show(id_show_busca)
                     print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
@@ -153,7 +154,7 @@ def buscar_ingresso():
         elif opcao == 3:
             preco_max = float(input("Exibir ingressos até qual preço? R$ "))
             encontrou = False
-            for id_ing, ing in bilheteria.items():
+            for id_ing, ing in ingressos.items():
                 if ing['preco'] <= preco_max:
                     nome_show = obter_nome_show(ing['id_show'])
                     print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
@@ -173,7 +174,7 @@ def editar_ingresso():
     print()
     id_ingresso = int(input("ID do ingresso que deseja editar? "))
 
-    if id_ingresso not in bilheteria:
+    if id_ingresso not in ingressos:
         print("👺❌ Ingresso não encontrado")
         return
 
@@ -188,12 +189,12 @@ def editar_ingresso():
         preco = float(input("Novo preço: "))
         qtd_disponivel = int(input("Nova quantidade disponível: "))
 
-        bilheteria[id_ingresso] = {
+        ingressos[id_ingresso] = {
             'id_show': id_show,
             'preco': preco,
             'qtd_disponivel': qtd_disponivel
         }
-        storage.salvar("bilheteria", bilheteria)
+        storage.salvar("ingressos", ingressos)
         print("Ingresso editado com sucesso!")
     else:
         print("👺❌ Show informado não existe. Operação cancelada.")
@@ -203,18 +204,18 @@ def excluir_ingresso():
     print("---Exclusão de Ingresso----")
     id_ingresso = int(input("Digite o ID do ingresso que você quer deletar: "))
 
-    if id_ingresso not in bilheteria:
+    if id_ingresso not in ingressos:
         print("Ingresso não encontrado")
         return
 
-    nome_show = obter_nome_show(bilheteria[id_ingresso]['id_show'])
+    nome_show = obter_nome_show(ingressos[id_ingresso]['id_show'])
     validar = input(f"Quer mesmo deletar os ingressos do show: {nome_show}? (Digite sim se quiser apagar) ").lower()
 
     if validar == "sim":
         print("Excluindo...")
         sleep(1)
-        del bilheteria[id_ingresso]
-        storage.salvar("bilheteria", bilheteria)
+        del ingressos[id_ingresso]
+        storage.salvar("ingressos", ingressos)
         print("Ingresso excluido com sucesso")
     else:
         print("Operação cancelada")
