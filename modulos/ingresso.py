@@ -9,7 +9,6 @@ import modulos.geral as g
 # ──────────────────────────────────────────────
 
 bilheteria = storage.carregar("bilheteria")
-vendas = storage.carregar("vendas")
 
 if not bilheteria:
     bilheteria = {
@@ -20,12 +19,6 @@ if not bilheteria:
         }
     }
     storage.salvar("bilheteria", bilheteria)
-
-if not vendas:
-    vendas = {
-
-    }
-    storage.salvar("vendas", vendas)
 
 # ──────────────────────────────────────────────
 # HELPERS
@@ -227,57 +220,6 @@ def excluir_ingresso():
         print("Operação cancelada")
 
 
-def vender_ingresso():
-    print("--- Venda de Ingressos ---")
-
-    if not bilheteria:
-        print("Nenhum ingresso cadastrado no sistema")
-        return
-
-    exibir_shows_disponiveis()
-
-    id_ingresso = int(input("\nDigite o ID do ingresso que você deseja comprar: "))
-
-    if id_ingresso not in bilheteria:
-        print("❌ Ingresso não encontrado")
-        return
-
-    ingresso = bilheteria[id_ingresso]
-
-    if ingresso['qtd_disponivel'] == 0:
-        print("❌ Ingressos esgotados para esse show.")
-        return
-
-    quantidade = int(input(f"Quantos ingressos? (disponíveis: {ingresso['qtd_disponivel']}) "))
-
-    if quantidade > ingresso['qtd_disponivel']:
-        print(f"Quantidade indisponivel. Máximo: {ingresso['qtd_disponivel']}")
-        return
-
-    valor_total = quantidade * ingresso['preco']
-    nome_show = obter_nome_show(ingresso['id_show'])
-
-    confirmar = input(f"\nConfirmar compra de {quantidade} ingressos para '{nome_show}' por R$ {valor_total:.2f}? (sim/não): ").lower()
-
-    if confirmar == 'sim':
-        if vendas:
-            novo_id_venda = max(vendas.keys()) + 1
-        else:
-            novo_id_venda = 1
-
-        vendas[novo_id_venda] = {
-            'id_ingresso': id_ingresso,
-            'id_show': ingresso['id_show'],
-            'quantidade': quantidade,
-            'valor_total': valor_total
-        }
-        ingresso['qtd_disponivel'] -= quantidade
-        storage.salvar("bilheteria", bilheteria)
-        storage.salvar("vendas", vendas)
-        print(f"✅ Compra realizada! {quantidade} ingresso(s) para '{nome_show}'. Total: R$ {valor_total:.2f}")
-    else:
-        print("❌ Operação cancelada")
-
 def menu_ingressos():
     while True:
 
@@ -286,45 +228,12 @@ def menu_ingressos():
             Ingressos 🎫
 =========================================
     1. Cadastrar Ingresso
+              
     2. Listar/Buscar Ingressos
+              
     3. Editar Ingressos
+              
     4. Excluir Ingressos
-    0. Sair do Modulo
-=========================================
-''')
-        try:
-            opcao = int(input("Escolha uma opção: "))
-        except ValueError:
-            print("Valor invalido, por favor tente novamente")
-            continue
-
-        if opcao == 1:
-            cadastrar_ingresso()
-        elif opcao == 2:
-            buscar_ingresso()
-        elif opcao == 3:
-            editar_ingresso()
-        elif opcao == 4:
-            excluir_ingresso()
-        elif opcao == 0:
-            print("Saindo...")
-            sleep(1)
-            break
-
-def menu_vendas():
-     while True:
-
-        print('''
-=========================================
-          Vendas 💰
-=========================================
-    1. Cadastrar Vendas
-              
-    2. Listar/Buscar Vendas
-              
-    3. Editar Vendas
-              
-    4. Excluir Vendas
               
     0. Sair do Modulo
 =========================================
@@ -347,44 +256,3 @@ def menu_vendas():
             print("Saindo...")
             sleep(1)
             break
-
-
-
-# ──────────────────────────────────────────────
-# MENU PRINCIPAL DO MÓDULO
-# ──────────────────────────────────────────────
-
-def menu_bilheteria():
-    while True:
-        print('''
-=========================================
-        Modulo de Bilheteria 
-=========================================
-    1. INGRESSOS 🎫
-
-    2. VENDAS 💸
-              
-    0. SAIR DO MODULO 📤
-=========================================
-''')
-        try:
-            opcao = int(input("Escolha uma opção: "))
-        except ValueError:
-            print("Valor invalido, por favor tente novamente")
-            continue
-
-        if opcao == 1:
-            menu_ingressos()
-        elif opcao == 2:
-            menu_vendas()
-        
-        elif opcao == 0:
-            print("Saindo do modulo...")
-            sleep(1)
-            break
-        else:
-            print("✋👺🚫Opção invalida, tente novamente")
-
-
-if __name__ == "__main__":
-    menu_bilheteria()

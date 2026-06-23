@@ -60,9 +60,13 @@ def buscar_artistas():
          Buscador de Artistas
 =========================================
   1. Buscar por ID
+              
   2. Buscar por Nome
+              
   3. Buscar por Gênero
+              
   4. Buscar por Cache (até um valor)
+              
   0. Voltar
 =========================================''')
 
@@ -205,10 +209,15 @@ def menu_artistas():
           Módulo de Artistas
 =========================================
   1. Cadastrar Artista
-  2. Listar Todos
+              
+  2. Exibir Todos
+              
   3. Buscar Artista
+              
   4. Editar Artista
+              
   5. Excluir Artista
+              
   0. Sair do Módulo
 =========================================''')
         try:
