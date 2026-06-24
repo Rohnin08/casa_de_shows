@@ -28,41 +28,46 @@ if not ingressos:
 
 def obter_nome_show(id_show):
     '''Obtem o nome dos shows do arquivo de shows'''
-    if id_show in shows.shows:
+    if id_show in shows.shows and shows.shows[id_show]['cadastrado']:
         return shows.shows[id_show]['nome']
     else:
         return "Show Desconhecido"
-
-
 
 # ──────────────────────────────────────────────
 # CRUD
 # ──────────────────────────────────────────────
 
 def cadastrar_ingresso():
-    print("--- Cadastro de Ingressos ---")
-    print()
-    shows_atuais = storage.carregar("shows")
+    print("--- Cadastro de Ingressos ---\n")
 
-    if not shows_atuais:
+    if not shows.shows:
         print("Nenhum show cadastrado no sistema. Cadastre um show primeiro!")
         return
 
     novo_id = g.gerar_id(ingressos)
 
     print("Shows disponíveis:")
-    for id_show, show in shows_atuais.items():
+    for id_show, show in shows.shows.items():
         if show['cadastrado']:
-            print(f"  {id_show}. {show['nome']}")
-    print()
+            print(f"  {id_show}. {show['nome']}\n")
 
-    id_show = int(input("ID do show que deseja associar a este ingresso: "))
+    while True:
+        try:
+            id_show = int(input("ID do show que deseja associar a este ingresso: "))
+            break
+        except ValueError:
+            print("⚠️ ID invalido, tente novamente")
 
     if id_show in shows.shows and shows.shows[id_show]['cadastrado']:
-        preco = float(input("Preço do ingresso: "))
-        qtd_disponivel = int(input("Quantidade de ingressos disponíveis: "))
+        while True:
+            try:
+                preco = float(input("Preço do ingresso: "))
+                qtd_disponivel = int(input("Quantidade de ingressos disponíveis: "))
+                break
+            except ValueError:
+                print("⚠️ Valor invalido, tente novamente")
 
-        ids_cadastrados = [i['id_show'] for i in ingressos.values()]
+        ids_cadastrados = [i['id_show'] for i in ingressos.values() if i['cadastrado']]
 
         if id_show not in ids_cadastrados:
             ingressos[novo_id] = {
@@ -103,24 +108,35 @@ def buscar_ingresso():
 
         # Buscar por ID do ingresso
         if opcao == 1:
-            id_ing = int(input("ID do ingresso: "))
+            while True:
+                try:
+                    id_ing = int(input("ID do ingresso: "))
+                    break
+                except ValueError:
+                    print("⚠️ Valor invalido, tente novamente.")
+
             encontrou = False
             if id_ing in ingressos and ingressos[id_ing]['cadastrado']:
                 ing = ingressos[id_ing]
-                id_show = ing['id_show']
-                nome_show = obter_nome_show(id_show)
+                nome_show = obter_nome_show(ing['id_show'])
                 print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
                 encontrou = True
             if not encontrou:
                 print("❌Nenhum ingresso com esse ID foi encontrado.")
-            input("\nPrecione Enter para continuar... ")
+            input("\nPressione Enter para continuar... ")
 
         # Busca por Show, filtro simples
         elif opcao == 2:
-            id_show_busca = int(input("Digite o ID do show: "))
+            while True:
+                try:
+                    id_show_busca = int(input("Digite o ID do show: "))
+                    break
+                except ValueError:
+                    print("⚠️ ID invalido, tente novamente.")
+
             encontrou = False
             for id_ing, ing in ingressos.items():
-                if ing['id_show'] == id_show_busca and ingressos[id_ing]['cadastrado']:
+                if ing['id_show'] == id_show_busca and ing['cadastrado']:
                     nome_show = obter_nome_show(id_show_busca)
                     print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
                     encontrou = True
@@ -130,10 +146,16 @@ def buscar_ingresso():
 
         # Busca por preço, filtro simples
         elif opcao == 3:
-            preco_max = float(input("Exibir ingressos até qual preço? R$ "))
+            while True:
+                try:
+                    preco_max = float(input("Exibir ingressos até qual preço? R$ "))
+                    break
+                except ValueError:
+                    print("⚠️ Valor invalido, tente novamente.")
+
             encontrou = False
             for id_ing, ing in ingressos.items():
-                if ing['preco'] <= preco_max and ingressos[id_ing]['cadastrado']:
+                if ing['preco'] <= preco_max and ing['cadastrado']:
                     nome_show = obter_nome_show(ing['id_show'])
                     print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
                     encontrou = True
@@ -150,7 +172,13 @@ def buscar_ingresso():
 def editar_ingresso():
     print("---Editor de Ingressos---")
     print()
-    id_ing = int(input("ID do ingresso que deseja editar? "))
+
+    while True:
+        try:
+            id_ing = int(input("ID do ingresso que deseja editar? "))
+            break
+        except ValueError:
+            print("⚠️ ID invalido, tente novamente.")
 
     if id_ing not in ingressos or not ingressos[id_ing]['cadastrado']:
         print("👺❌ Ingresso não encontrado")
@@ -162,11 +190,21 @@ def editar_ingresso():
             print(f"  {id_show}. {show['nome']}")
     print()
 
-    id_show = int(input("Novo ID do show: "))
+    while True:
+        try:
+            id_show = int(input("Novo ID do show: "))
+            break
+        except ValueError:
+            print("⚠️ ID invalido, tente novamente.")
 
     if id_show in shows.shows and shows.shows[id_show]['cadastrado']:
-        preco = float(input("Novo preço: "))
-        qtd_disponivel = int(input("Nova quantidade disponível: "))
+        while True:
+            try:
+                preco = float(input("Novo preço: "))
+                qtd_disponivel = int(input("Nova quantidade disponível: "))
+                break
+            except ValueError:
+                print("⚠️ Valor invalido, tente novamente.")
 
         ingressos[id_ing] = {
             'id_show': id_show,
@@ -182,14 +220,20 @@ def editar_ingresso():
 
 def excluir_ingresso():
     print("---Exclusão de Ingresso----")
-    id_ing = int(input("Digite o ID do ingresso que você quer deletar: "))
+
+    while True:
+        try:
+            id_ing = int(input("Digite o ID do ingresso que você quer excluir: "))
+            break
+        except ValueError:
+            print("⚠️ ID invalido, tente novamente.")
 
     if id_ing not in ingressos or not ingressos[id_ing]['cadastrado']:
         print("Ingresso não encontrado")
         return
 
     nome_show = obter_nome_show(ingressos[id_ing]['id_show'])
-    validar = input(f"Quer mesmo deletar os ingressos do show: {nome_show}? (Digite sim se quiser apagar) ").lower()
+    validar = input(f"Quer mesmo excluir os ingressos do show: {nome_show}? (Digite sim se quiser apagar) ").lower()
 
     if validar == "sim":
         print("Excluindo...")

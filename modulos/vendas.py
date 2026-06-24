@@ -100,13 +100,13 @@ def cadastrar_venda():
         print("❌ Operação cancelada")    
     
 
-def cadastrar_venda():
+def buscar_venda():
     pass
 
-def cadastrar_venda():
+def editar_venda():
     pass
 
-def cadastrar_venda():
+def cancelar_venda():
     pass
 
 

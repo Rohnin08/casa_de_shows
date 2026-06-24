@@ -29,9 +29,14 @@ def exibir_artista(id_art, dados):
 
 def cadastrar_artista(): 
     print("\n--- CADASTRAR ARTISTA ---")
-    nome = input("Nome do artista: ")
-    cache = float(input("Cache do artista: R$ "))
-    genero = input("Gênero musical: ")
+    while True:
+        try:
+            nome = input("Nome do artista: ")
+            cache = float(input("Cache do artista: R$ "))
+            genero = input("Gênero musical: ")
+            break
+        except ValueError:
+            print("Valor invalido em um dos campos, por favor tente novamente")
 
     novo_id = g.gerar_id(artistas)
     
@@ -51,7 +56,9 @@ def exibir_todos():
         return
     print("\n--- LISTA DE ARTISTAS ---")
     for id_art, dados in artistas.items():
-        exibir_artista(id_art, dados) 
+        if artistas[id_art]['cadastrado']:
+            exibir_artista(id_art, dados)
+    input("\nContinuar...")
 
 def buscar_artistas():
     while True:
@@ -78,9 +85,14 @@ def buscar_artistas():
             continue
 
         if opcao == 1:
-            id_art = int(input("ID do artista: "))
+            while True:
+                try:
+                    id_art = int(input("ID do artista: "))
+                    break
+                except ValueError:
+                    print("⚠️ Valor invalido, tente novamente")
 
-            if id_art in artistas and artistas[id_art]['cadastrado'] == True:
+            if id_art in artistas and artistas[id_art]['cadastrado']:
                 exibir_artista(id_art, artistas[id_art])
 
             else:
@@ -91,7 +103,7 @@ def buscar_artistas():
             resultado = []
 
             for id_art, dados in artistas.items():
-                if termo in dados['nome'].lower() and artistas[id_art]['cadastrado'] == True:
+                if termo in dados['nome'].lower() and dados['cadastrado']:
                     resultado.append((id_art, dados))
 
             if resultado:
@@ -102,12 +114,12 @@ def buscar_artistas():
                 print("❌ Nenhum artista encontrado com este nome.")
 
         elif opcao == 3:
-            genero_busca = input("Gênero musical: ").lower()
+            termo = input("Gênero musical: ").lower()
 
             resultado = [] #Lista para armazenar o que ele achar com aquela informação
 
             for id_art, dados in artistas.items():
-                if genero_busca == dados['genero'].lower() and artistas[id_art]['cadastrado'] == True: # verifica se existe o genero e se o artista que tem aquele género está ativo.
+                if termo in dados['genero'].lower() and artistas[id_art]['cadastrado']: # verifica se existe o genero e se o artista que tem aquele género está ativo.
                     resultado.append((id_art, dados)) #Adiciona ao final da lista tudo que ele for achando
 
             if resultado:
@@ -123,7 +135,7 @@ def buscar_artistas():
             resultado = []
 
             for id_art, dados in artistas.items():
-                if dados['cache'] <= cache_limite and artistas[id_art]['cadastrado'] == True:
+                if dados['cache'] <= cache_limite and artistas[id_art]['cadastrado']:
                     resultado.append((id_art, dados))
 
             if resultado:
@@ -135,7 +147,6 @@ def buscar_artistas():
 
         elif opcao == 0:
             print("Saindo...")
-            sleep(1)
             break
 
         else:
@@ -146,9 +157,16 @@ def buscar_artistas():
 def editar_artista():
     '''Busca o artista do ID e fornece para ele o um 'menu' para adicionar as novas informações do artistas associado aquele ID'''
     print("\n--- EDITAR ARTISTA ---")
-    id_art = int(input("ID do artista que deseja editar: "))
 
-    if id_art not in artistas or artistas[id_art]['cadastrado'] == False:
+    while True:
+        try: 
+            id_art = int(input("ID do artista que deseja editar: "))
+            break
+        except ValueError:
+            print("⚠️ Valor invalido, tente novamente")
+            
+
+    if id_art not in artistas or not artistas[id_art]['cadastrado']: # Verifica se existe algum id igual ao digitado ou se ele não está ativo 
         print("❌ Artista não encontrado.")
         return
 
@@ -166,7 +184,11 @@ def editar_artista():
         nome = atual['nome']
         
     if novo_cache_str:
-        cache  = float(novo_cache_str)
+        try:
+            cache = float(novo_cache_str)
+        except ValueError:
+            print("Valor invalido para cache")
+            return
     else: 
         cache = atual['cache']
         
@@ -175,26 +197,38 @@ def editar_artista():
     else:
         genero = atual['genero']
 
-    artistas[id_art] = {'nome': nome, 'cache': cache, 'genero': genero, 'cadastrado': True}
+    artistas[id_art] = {
+        'nome': nome,
+        'cache': cache,
+        'genero': genero,
+        'cadastrado': True
+        }
     storage.salvar("artistas", artistas)
     print("✅ Artista atualizado com sucesso!")
 
 def excluir_artista():
     '''Permite o usuário buscar o artista por meio do 'ID' com o objetivo de excluir. Ele tem um validador simples afim de evitar que o usuário apague sem querer'''
     print("\n--- EXCLUIR ARTISTA ---")
-    id_art = int(input("ID do artista que deseja excluir: "))
 
-    if id_art not in artistas or artistas[id_art]['cadastrado'] == False:
+    while True:
+        try:
+            id_art = int(input("ID do artista que deseja excluir: "))
+            break
+        except ValueError:
+            print("⚠️ Valor invalido, tente novamente")
+
+
+    if id_art not in artistas or not artistas[id_art]['cadastrado']:
         print("❌ Artista não encontrado.")
         return
 
-    confirmar = input(f"Tem certeza que quer deletar '{artistas[id_art]['nome']}'? (sim/não): ").lower()
+    confirmar = input(f"Tem certeza que quer excluir '{artistas[id_art]['nome']}'? (sim/não): ").lower()
     if confirmar == "sim":
-        print("Desabilitando...")
+        print("Excluindo...")
         sleep(1)
         artistas[id_art]['cadastrado'] = False
         storage.salvar("artistas", artistas)
-        print("✅ Artista Desabilitado com sucesso!")
+        print("✅ Artista Excluido com sucesso!")
     else:
         print("Operação cancelada.")
 
@@ -238,7 +272,7 @@ def menu_artistas():
             excluir_artista()
         elif opcao == 0:
             print("Saindo do módulo...")
-            sleep(1)
+            sleep(0.5)
             break
         else:
             print("✋👺🚫 Opção inválida!")

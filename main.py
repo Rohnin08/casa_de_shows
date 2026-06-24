@@ -82,7 +82,6 @@ while controle == True:
         limpar_tela()
         pass
 
-
     elif opcao == 0:
         limpar_tela()
         print("Saindo do programa...")

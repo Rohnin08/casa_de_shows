@@ -10,12 +10,14 @@ clientes = storage.carregar('clientes')
 
 if not clientes:
     clientes = {}
-
     storage.salvar("clientes", clientes)
 
-############
+# ──────────────────────────────────────────────
+# HELPERS
+# ──────────────────────────────────────────────
+
 def exibir_cliente(id_cli, dados):
-    print(f"ID: {id_cli}\nNome: {dados['nome']}\nHistórico de compras: {dados['historico_compras']}")
+    print(f"\nID: {id_cli}\nNome: {dados['nome']}\nHistórico de compras: {dados['historico_compras']}\n")
 
 # ──────────────────────────────────────────────
 # CRUD
@@ -23,76 +25,118 @@ def exibir_cliente(id_cli, dados):
 
 # Cadastro de CLIENTES
 def cadastrar_cliente():
-    print("\n --- CADASTRAR CLIENTE")
-    nome = str(input("Nome do Cliente: "))
-
+    print("\n--- CADASTRAR CLIENTE ---")
+    nome = input("Nome do Cliente: ")
     novo_id = g.gerar_id(clientes)
 
     clientes[novo_id] = {
         'nome': nome,
-        'cadastrado':True,
+        'cadastrado': True,
         'historico_compras': []
-        }
-    
+    }
     storage.salvar("clientes", clientes)
-    print(f"\nCliente: {nome} cadastrado com sucessso! (ID: {novo_id})")
+    print(f"\n✅ Cliente '{nome}' cadastrado com sucesso! (ID: {novo_id})")
 
 
 # Busca de CLIENTES
 def buscar_cliente():
-    while True: 
+    while True:
         print('''
 =========================================
          Buscador de Clientes
 =========================================
   1. Buscar por ID
-  2. Buscar por Nome
-  3. Buscar histórico de vendas
+  2. Listar Todos
+  3. Buscar por Nome
+  4. Buscar histórico de compras
   0. Voltar
 =========================================''')
-        
+
         try:
-            opcao = int(input("Escolha uma opcão: "))
+            opcao = int(input("Escolha uma opção: "))
         except ValueError:
-            print("Valor Invalido, por favor tente novamente")
+            print("⚠️ Valor inválido, por favor tente novamente")
             continue
-        
+
         if opcao == 1:
-            id_cli = int(input("ID do cliente: "))
-            if id_cli in clientes and clientes[id_cli]['cadastrado'] == True:
+            while True:
+                try:
+                    id_cli = int(input("ID do cliente: "))
+                    break
+                except ValueError:
+                    print("⚠️ ID inválido, tente novamente.")
+
+            if id_cli in clientes and clientes[id_cli]['cadastrado']:
                 exibir_cliente(id_cli, clientes[id_cli])
             else:
-                print("❌Cliente não encontrado.")
-        
+                print("❌ Cliente não encontrado.")
+            input("\nPressione Enter para continuar...")
+
         elif opcao == 2:
-            termo = input("Nome (Ou parte dele:): ").lower().strip()
+            print("\n--- LISTA DE CLIENTES ---")
+            encontrados = False
+            for id_cli, dados in clientes.items():  # ← corrigido: era clientes sem .items()
+                if dados['cadastrado']:
+                    exibir_cliente(id_cli, dados)
+                    encontrados = True
+            if not encontrados:
+                print("❌ Nenhum cliente cadastrado.")
+            input("\nPressione Enter para continuar...")
+
+        elif opcao == 3:
+            termo = input("Nome (ou parte dele): ").lower().strip()
             resultado = []
             for id_cli, dados in clientes.items():
-                if termo in dados ['nome'].lower() and clientes[id_cli]['cadastrado'] == True:
+                if termo in dados['nome'].lower() and dados['cadastrado']:
                     resultado.append((id_cli, dados))
             if resultado:
                 for id_cli, dados in resultado:
                     exibir_cliente(id_cli, dados)
             else:
-                print("❌Nenhum cliente encontrado com este nome.")
-        
-        elif opcao == 3:
-            pass
+                print("❌ Nenhum cliente encontrado com este nome.")
+            input("\nPressione Enter para continuar...")
+
+        elif opcao == 4:
+            while True:
+                try:
+                    id_cli = int(input("ID do cliente: "))
+                    break
+                except ValueError:
+                    print("⚠️ ID inválido, tente novamente.")
+
+            if id_cli in clientes and clientes[id_cli]['cadastrado']:
+                historico = clientes[id_cli]['historico_compras']
+                if historico:
+                    print(f"\nHistórico de compras do cliente '{clientes[id_cli]['nome']}':")
+                    for id_venda in historico:
+                        print(f"  ID da venda: {id_venda}")
+                else:
+                    print("❌ Este cliente não possui compras registradas.")
+            else:
+                print("❌ Cliente não encontrado.")
+            input("\nPressione Enter para continuar...")
 
         elif opcao == 0:
             print("Saindo...")
             sleep(1)
             break
 
-def listar_clientes():
-    pass
+        else:
+            print("⚠️ Opção inválida.")
+
 
 def editar_cliente():
-    '''Busca o artista do ID e fornece para ele o um 'menu' para adicionar as novas informações do cliente associado aquele ID'''
+    '''Busca o cliente pelo ID e permite atualizar o nome'''
     print("\n--- EDITAR CLIENTE ---")
-    id_cli = int(input("ID do cliente que deseja editar: "))
 
-    if id_cli not in clientes:
+    while True:
+        try:
+            id_cli = int(input("ID do cliente que deseja editar: "))
+            break
+        except ValueError:
+            print("⚠️ ID inválido, tente novamente.")
+
+    if id_cli not in clientes or not clientes[id_cli]['cadastrado']:  # ← corrigido: faltava checar 'cadastrado'
         print("❌ Cliente não encontrado.")
         return
 
@@ -105,60 +149,68 @@ def editar_cliente():
     if novo_nome:
         nome = novo_nome
     else:
-        atual['nome']
-        
-    clientes[id_cli] = {'nome': nome}
+        nome = atual['nome']  # ← corrigido: faltava a atribuição
+
+    clientes[id_cli] = {
+        'nome': nome,
+        'cadastrado': True,
+        'historico_compras': atual['historico_compras']  # ← corrigido: preserva o histórico
+    }
     storage.salvar("clientes", clientes)
     print("✅ Cliente atualizado com sucesso!")
 
 
 def excluir_cliente():
-    '''Permite o usuário buscar um cliente por meio do 'ID' com o objetivo de 'excluir'. Ele tem um validador simples afim de evitar que o usuário apague sem querer'''
-    print("\n--- EXCLUIR ARTISTA ---")
-    id_cli = int(input("ID do artista que deseja excluir: "))
+    '''Permite excluir um cliente pelo ID com confirmação'''
+    print("\n--- EXCLUIR CLIENTE ---")  # ← corrigido: dizia ARTISTA
 
-    if id_cli not in clientes or clientes[id_cli]['cadastrado'] == False:
-        print("❌ Artista não encontrado.")
+    while True:
+        try:
+            id_cli = int(input("ID do cliente que deseja excluir: "))  # ← corrigido: dizia artista
+            break
+        except ValueError:
+            print("⚠️ ID inválido, tente novamente.")
+
+    if id_cli not in clientes or not clientes[id_cli]['cadastrado']:
+        print("❌ Cliente não encontrado.")  # ← corrigido: dizia Artista
         return
 
-    confirmar = input(f"Tem certeza que quer deletar '{clientes[id_cli]['nome']}'? (sim/não): ").lower()
+    confirmar = input(f"Tem certeza que quer excluir '{clientes[id_cli]['nome']}'? (sim/não): ").lower()
     if confirmar == "sim":
-        print("Desabilitando...")
+        print("Excluindo...")
         sleep(1)
         clientes[id_cli]['cadastrado'] = False
         storage.salvar("clientes", clientes)
-        print("✅ Cliente Desabilitado com sucesso!")
+        print("✅ Cliente excluído com sucesso!")
     else:
         print("Operação cancelada.")
-    
+
 
 def menu_clientes():
     while True:
         print('''
 =========================================
-          Módulo de Artistas
+          Módulo de Clientes
 =========================================
   1. Cadastrar Cliente
   2. Buscar Cliente
   3. Editar Cliente
-  4. Desabilitar Cliente
+  4. Excluir Cliente
   0. Sair do Módulo
 =========================================''')
         try:
             opcao = int(input("Escolha uma opção: "))
         except ValueError:
-            print("❌Valor invalido, por favor tente novamente")
+            print("⚠️ Valor inválido, por favor tente novamente")
             continue
 
         if opcao == 1:
             cadastrar_cliente()
         elif opcao == 2:
-            pass
-        elif opcao == 3:
             buscar_cliente()
-        elif opcao == 4:
+        elif opcao == 3:
             editar_cliente()
-        elif opcao == 5:
+        elif opcao == 4:
             excluir_cliente()
         elif opcao == 0:
             print("Saindo do módulo...")
