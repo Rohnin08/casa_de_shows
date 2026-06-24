@@ -15,48 +15,25 @@ if not ingressos:
         1: {
             'id_show': 1,
             'preco': 150.00,
-            'qtd_disponivel': 500
+            'qtd_disponivel': 500,
+            'cadastrado':True
         }
     }
     storage.salvar("ingressos", ingressos)
 
 
 # ──────────────────────────────────────────────
-# HELPERS
+# Funções uteis
 # ──────────────────────────────────────────────
 
 def obter_nome_show(id_show):
+    '''Obtem o nome dos shows do arquivo de shows'''
     if id_show in shows.shows:
         return shows.shows[id_show]['nome']
     else:
         return "Show Desconhecido"
 
-def exibir_shows_disponiveis():
-    print("---Shows Disponiveis---\n")
-    for id_ing, ing in ingressos.items():
-        id_show = ing['id_show']
-        if id_show not in shows.shows:
-            continue
-        show = shows.shows[id_show]
 
-        nomes_do_lineup = []
-        for id_art in show['lineup']:
-            if id_art in artistas.artistas:
-                nomes_do_lineup.append(artistas.artistas[id_art]['nome'])
-            else:
-                print("Artista não encontrado")
-        lineup_str = ', '.join(nomes_do_lineup)
-
-        print(f''' 
-==========================
-ID Ingresso : {id_ing}
-Show        : {show['nome']}
-Lineup      : {lineup_str}
-Horário     : {show['hora_inicio'].strftime('%H:%M')} às {show['hora_termino'].strftime('%H:%M')}
-Data        : {show['data'].strftime('%d/%m/%Y')}
-Preço       : R$ {ing['preco']:.2f}
-Disponíveis : {ing['qtd_disponivel']} ingressos
-==========================''')
 
 # ──────────────────────────────────────────────
 # CRUD
@@ -75,7 +52,8 @@ def cadastrar_ingresso():
 
     print("Shows disponíveis:")
     for id_show, show in shows_atuais.items():
-        print(f"  {id_show}. {show['nome']}")
+        if show['cadastrado']:
+            print(f"  {id_show}. {show['nome']}")
     print()
 
     id_show = int(input("ID do show que deseja associar a este ingresso: "))
@@ -127,7 +105,7 @@ def buscar_ingresso():
         if opcao == 1:
             id_ing = int(input("ID do ingresso: "))
             encontrou = False
-            if id_ing in ingressos:
+            if id_ing in ingressos and ingressos[id_ing]['cadastrado']:
                 ing = ingressos[id_ing]
                 id_show = ing['id_show']
                 nome_show = obter_nome_show(id_show)
@@ -137,12 +115,12 @@ def buscar_ingresso():
                 print("❌Nenhum ingresso com esse ID foi encontrado.")
             input("\nPrecione Enter para continuar... ")
 
-        # Busca por Show
+        # Busca por Show, filtro simples
         elif opcao == 2:
             id_show_busca = int(input("Digite o ID do show: "))
             encontrou = False
             for id_ing, ing in ingressos.items():
-                if ing['id_show'] == id_show_busca:
+                if ing['id_show'] == id_show_busca and ingressos[id_ing]['cadastrado']:
                     nome_show = obter_nome_show(id_show_busca)
                     print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
                     encontrou = True
@@ -150,12 +128,12 @@ def buscar_ingresso():
                 print("❌Nenhum ingresso vinculado a este ID de show.")
             input("\nPressione Enter para continuar...")
 
-        # Busca por preço
+        # Busca por preço, filtro simples
         elif opcao == 3:
             preco_max = float(input("Exibir ingressos até qual preço? R$ "))
             encontrou = False
             for id_ing, ing in ingressos.items():
-                if ing['preco'] <= preco_max:
+                if ing['preco'] <= preco_max and ingressos[id_ing]['cadastrado']:
                     nome_show = obter_nome_show(ing['id_show'])
                     print(f"\nID Ingresso: {id_ing}\nShow: {nome_show}\nPreço: R${ing['preco']:.2f}\nQuantidade: {ing['qtd_disponivel']}\n")
                     encontrou = True
@@ -172,27 +150,29 @@ def buscar_ingresso():
 def editar_ingresso():
     print("---Editor de Ingressos---")
     print()
-    id_ingresso = int(input("ID do ingresso que deseja editar? "))
+    id_ing = int(input("ID do ingresso que deseja editar? "))
 
-    if id_ingresso not in ingressos:
+    if id_ing not in ingressos or not ingressos[id_ing]['cadastrado']:
         print("👺❌ Ingresso não encontrado")
         return
 
     print("Shows disponíveis:")
-    for id_sh, sh in shows.shows.items(): #Lista todos os shows que estão dentro do dicionario shows
-        print(f"  {id_sh}. {sh['nome']}")
+    for id_show, show in shows.shows.items(): #Lista todos os shows que estão dentro do dicionario shows
+        if show['cadastrado']:
+            print(f"  {id_show}. {show['nome']}")
     print()
 
     id_show = int(input("Novo ID do show: "))
 
-    if id_show in shows.shows:
+    if id_show in shows.shows and shows.shows[id_show]['cadastrado']:
         preco = float(input("Novo preço: "))
         qtd_disponivel = int(input("Nova quantidade disponível: "))
 
-        ingressos[id_ingresso] = {
+        ingressos[id_ing] = {
             'id_show': id_show,
             'preco': preco,
-            'qtd_disponivel': qtd_disponivel
+            'qtd_disponivel': qtd_disponivel,
+            'cadastrado':True
         }
         storage.salvar("ingressos", ingressos)
         print("Ingresso editado com sucesso!")
@@ -202,19 +182,19 @@ def editar_ingresso():
 
 def excluir_ingresso():
     print("---Exclusão de Ingresso----")
-    id_ingresso = int(input("Digite o ID do ingresso que você quer deletar: "))
+    id_ing = int(input("Digite o ID do ingresso que você quer deletar: "))
 
-    if id_ingresso not in ingressos:
+    if id_ing not in ingressos or not ingressos[id_ing]['cadastrado']:
         print("Ingresso não encontrado")
         return
 
-    nome_show = obter_nome_show(ingressos[id_ingresso]['id_show'])
+    nome_show = obter_nome_show(ingressos[id_ing]['id_show'])
     validar = input(f"Quer mesmo deletar os ingressos do show: {nome_show}? (Digite sim se quiser apagar) ").lower()
 
     if validar == "sim":
         print("Excluindo...")
         sleep(1)
-        del ingressos[id_ingresso]
+        ingressos[id_ing]['cadastrado'] = False
         storage.salvar("ingressos", ingressos)
         print("Ingresso excluido com sucesso")
     else:
