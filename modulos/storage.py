@@ -6,7 +6,7 @@ PASTA = "dados"
 def salvar(nome_arquivo, dados):
     try:
         with open(f"{PASTA}/{nome_arquivo}.dat", "wb") as file:
-            pickle.dump(dados, file)
+            pickle.dump(dados, file) 
     except FileNotFoundError:
         os.makedirs(PASTA)
         with open(f"{PASTA}/{nome_arquivo}.dat", "wb") as file:

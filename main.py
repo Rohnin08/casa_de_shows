@@ -4,11 +4,12 @@ import modulos.artistas as artistas
 import modulos.shows as shows
 import modulos.clientes as clientes
 import modulos.bilheteria as bilheteria
+import modulos.relatorios_vendas as relatorio_vendas
+import modulos.sobre as sobre
+from modulos.geral import limpar_tela
 
 controle = True
 
-def limpar_tela():
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 # Menu principal do sistema
@@ -22,9 +23,9 @@ while controle == True:
           
     2. Clientes 🧑
 
-    3. Shows 🎤
+    3. Shows 🎸
 
-    4. Bilheteria 🎫
+    4. Bilheteria 🎫 💵
         
     5. Relatorios de Vendas 📋 
     
@@ -73,14 +74,14 @@ while controle == True:
         print("Carregando...")
         sleep(1)
         limpar_tela()
-        pass
+        relatorio_vendas.menu_relatorios()
 
     elif opcao == 6:
         limpar_tela()
         print("Carregando...")
         sleep(1)
         limpar_tela()
-        pass
+        sobre.exibir_sobre()
 
     elif opcao == 0:
         limpar_tela()

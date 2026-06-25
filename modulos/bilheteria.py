@@ -28,12 +28,15 @@ def menu_bilheteria():
             continue
 
         if opcao == 1:
+            limpar_tela()
             ingressos.menu_ingressos()
 
         elif opcao == 2:
+            limpar_tela()
             vendas.menu_vendas()
         
         elif opcao == 0:
+            limpar_tela()
             print("Saindo do modulo...")
             sleep(1)
             break

@@ -11,10 +11,17 @@ artistas = storage.carregar("artistas")
 
 if not artistas:
     artistas = {
-        1: {'nome': 'Slipknot',    'cache': 1000.00, 'genero': 'Metal', 'cadastrado':True},
-        2: {'nome': 'Linkin Park', 'cache': 1500.00, 'genero': 'Nu Metal', 'cadastrado':True},
-        3: {'nome': 'Limp Bizkit', 'cache': 1200.00, 'genero': 'Nu Metal', 'cadastrado':True}
-    }
+    1: {'nome': 'Aurora Rock', 'cache': 8500.00, 'genero': 'Rock', 'cadastrado': True},
+    2: {'nome': 'Banda Eclipse', 'cache': 7200.00, 'genero': 'Rock', 'cadastrado': True},
+    3: {'nome': 'DJ Pulse', 'cache': 6000.00, 'genero': 'Eletrônica', 'cadastrado': True},
+    4: {'nome': 'Marina Costa', 'cache': 9500.00, 'genero': 'Pop', 'cadastrado': True},
+    5: {'nome': 'Os Sertanejos', 'cache': 11000.00, 'genero': 'Sertanejo', 'cadastrado': True},
+    6: {'nome': 'Grupo Raiz', 'cache': 5000.00, 'genero': 'Forró', 'cadastrado': True},
+    7: {'nome': 'Lucas Vieira', 'cache': 6700.00, 'genero': 'MPB', 'cadastrado': True},
+    8: {'nome': 'Metal Storm', 'cache': 9800.00, 'genero': 'Metal', 'cadastrado': True},
+    9: {'nome': 'Jazz Experience', 'cache': 7800.00, 'genero': 'Jazz', 'cadastrado': True},
+    10: {'nome': 'Pagode Livre', 'cache': 6900.00, 'genero': 'Pagode', 'cadastrado': True}
+}
     storage.salvar("artistas", artistas)
 
 # ──────────────────────────────────────────────
@@ -65,7 +72,7 @@ def buscar_artistas():
     while True:
         print('''
 =========================================
-         Buscador de Artistas
+        Buscador de Artistas 👨‍🎤
 =========================================
   1. Buscar por ID
               
@@ -262,16 +269,22 @@ def menu_artistas():
             continue
 
         if opcao == 1:
+            limpar_tela()
             cadastrar_artista()
         elif opcao == 2:
+            limpar_tela()
             exibir_todos()
         elif opcao == 3:
+            limpar_tela()
             buscar_artistas()
         elif opcao == 4:
+            limpar_tela
             editar_artista()
         elif opcao == 5:
+            limpar_tela()
             excluir_artista()
         elif opcao == 0:
+            limpar_tela()
             print("Saindo do módulo...")
             sleep(0.5)
             break

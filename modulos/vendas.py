@@ -16,7 +16,98 @@ from modulos.geral import limpar_tela
 vendas = storage.carregar("vendas")
 
 if not vendas:
-    vendas = {}
+    vendas = {
+    1: {
+        'id_ingresso': 1,
+        'id_show': 1,
+        'id_cliente': 1,
+        'quantidade': 3,
+        'valor_total': 360.00,
+        'horario': datetime(2026, 6, 20, 14, 30),
+        'aprovado': True
+    },
+    2: {
+        'id_ingresso': 2,
+        'id_show': 2,
+        'id_cliente': 2,
+        'quantidade': 2,
+        'valor_total': 300.00,
+        'horario': datetime(2026, 6, 20, 15, 10),
+        'aprovado': True
+    },
+    3: {
+        'id_ingresso': 3,
+        'id_show': 3,
+        'id_cliente': 3,
+        'quantidade': 4,
+        'valor_total': 360.00,
+        'horario': datetime(2026, 6, 21, 16, 20),
+        'aprovado': True
+    },
+    4: {
+        'id_ingresso': 4,
+        'id_show': 4,
+        'id_cliente': 4,
+        'quantidade': 1,
+        'valor_total': 80.00,
+        'horario': datetime(2026, 6, 21, 17, 5),
+        'aprovado': True
+    },
+    5: {
+        'id_ingresso': 5,
+        'id_show': 5,
+        'id_cliente': 5,
+        'quantidade': 2,
+        'valor_total': 280.00,
+        'horario': datetime(2026, 6, 22, 13, 45),
+        'aprovado': True
+    },
+    6: {
+        'id_ingresso': 6,
+        'id_show': 6,
+        'id_cliente': 6,
+        'quantidade': 3,
+        'valor_total': 300.00,
+        'horario': datetime(2026, 6, 22, 14, 10),
+        'aprovado': True
+    },
+    7: {
+        'id_ingresso': 7,
+        'id_show': 7,
+        'id_cliente': 7,
+        'quantidade': 1,
+        'valor_total': 170.00,
+        'horario': datetime(2026, 6, 23, 15, 0),
+        'aprovado': True
+    },
+    8: {
+        'id_ingresso': 8,
+        'id_show': 8,
+        'id_cliente': 8,
+        'quantidade': 2,
+        'valor_total': 220.00,
+        'horario': datetime(2026, 6, 23, 16, 25),
+        'aprovado': True
+    },
+    9: {
+        'id_ingresso': 9,
+        'id_show': 9,
+        'id_cliente': 9,
+        'quantidade': 4,
+        'valor_total': 380.00,
+        'horario': datetime(2026, 6, 24, 18, 15),
+        'aprovado': True
+    },
+    10: {
+        'id_ingresso': 10,
+        'id_show': 10,
+        'id_cliente': 10,
+        'quantidade': 3,
+        'valor_total': 540.00,
+        'horario': datetime(2026, 6, 24, 19, 40),
+        'aprovado': True
+    }
+}
 
     storage.salvar("vendas", vendas)
 
@@ -48,10 +139,10 @@ Cliente: {nome_cliente} (ID:{id_cli})
 Show: {nome_show} (ID: {id_show})
 ID Ingresso: {id_ing}
 Quantidade: {venda['quantidade']}
-Valor Total: R$ {venda['quantidade']:.2f}
+Valor Total: R$ {venda['valor_total']:.2f}
 Horário: {venda['horario'].strftime('%d/%m/%Y %H:%M')}
 Status: {status}
--------------------------------------------
+__________________________________________
 ''')
     
 def exibir_clientes_disponiveis():
@@ -63,7 +154,7 @@ def exibir_clientes_disponiveis():
 
 def exibir_shows_disponiveis():
     '''Exibe os shows disponiveis e o ingresso'''
-    print("---Shows Disponiveis---\n")
+    print("===Shows Disponiveis===\n")
     for id_ing, ing in ingressos.ingressos.items():
         id_show = ing['id_show']
         if id_show not in shows.shows:
@@ -92,7 +183,7 @@ Disponíveis : {ing['qtd_disponivel']} ingressos
 # Cadastrar Venda
 def cadastrar_venda():
     '''Registra uma nova venda, desconta estoque e atualiza histórico do cliente'''  
-    print("--- Nova Venda ---")
+    print("=== Nova Venda ===")
 
     if not ingressos.ingressos:
         print("Nenhum ingresso cadastrado no sistema")
@@ -165,7 +256,6 @@ Qtd     : {quantidade}
 Total   : R$ {valor_total:.2f}
           
           ''')
-    
 
     confirmar = input(f"\nConfirmar venda de {quantidade} ingressos para o '{nome_show}' por R$ {valor_total:.2f}? (sim/não): ").lower()
 
@@ -201,13 +291,14 @@ def buscar_venda():
     '''Busca vendas por diferentes critérios'''
     while True:
         print('''
----------------------------------------
+=======================================
          Buscador de Vendas
----------------------------------------
+=======================================
   1. Buscar por ID da Venda
   2. Buscar por Cliente
   3. Buscar por Show
   0. Voltar
+              
 ''')
         try:
             opcao = int(input("Qual a opção? "))
@@ -277,7 +368,7 @@ def buscar_venda():
 
 def editar_venda():
     '''Edita quantidade ou cliente de uma venda, reajustando estoque e histórico'''
-    print("--- Editar Venda ---")
+    print("=== Editar Venda ===")
 
     while True:
         try:
@@ -361,7 +452,7 @@ def editar_venda():
 
 def cancelar_venda():
     '''Cancela uma venda, devolve estoque e remove do histórico do cliente'''
-    print("--- Cancelar Venda ---")
+    print("=== Cancelar Venda ===")
 
     while True:
         try:
@@ -400,7 +491,7 @@ def menu_vendas():
 
         print('''
 =========================================
-          Vendas 💰
+               Vendas 💵
 =========================================
     1. Cadastrar Vendas
               

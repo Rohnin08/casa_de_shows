@@ -11,7 +11,19 @@ from modulos.geral import limpar_tela
 clientes = storage.carregar('clientes')
 
 if not clientes:
-    clientes = {}
+    clientes = {
+    1: {'nome': 'João Pedro', 'historico_de_compras': [1], 'cadastrado': True},
+    2: {'nome': 'Maria Eduarda', 'historico_de_compras': [2], 'cadastrado': True},
+    3: {'nome': 'Carlos Henrique', 'historico_de_compras': [3], 'cadastrado': True},
+    4: {'nome': 'Ana Clara', 'historico_de_compras': [4], 'cadastrado': True},
+    5: {'nome': 'Felipe Santos', 'historico_de_compras': [5], 'cadastrado': True},
+    6: {'nome': 'Juliana Lima', 'historico_de_compras': [6], 'cadastrado': True},
+    7: {'nome': 'Rafael Souza', 'historico_de_compras': [7], 'cadastrado': True},
+    8: {'nome': 'Beatriz Oliveira', 'historico_de_compras': [8], 'cadastrado': True},
+    9: {'nome': 'Gustavo Almeida', 'historico_de_compras': [9], 'cadastrado': True},
+    10: {'nome': 'Camila Ferreira', 'historico_de_compras': [10], 'cadastrado': True}
+}
+
     storage.salvar("clientes", clientes)
 
 # ──────────────────────────────────────────────
@@ -27,7 +39,7 @@ def exibir_cliente(id_cli, dados):
 
 # Cadastro de CLIENTES
 def cadastrar_cliente():
-    print("\n--- CADASTRAR CLIENTE ---")
+    print("\n=== CADASTRAR CLIENTE ===")
     nome = input("Nome do Cliente: ")
     novo_id = g.gerar_id(clientes)
 
@@ -75,7 +87,7 @@ def buscar_cliente():
             input("\nPressione Enter para continuar...")
 
         elif opcao == 2:
-            print("\n--- LISTA DE CLIENTES ---")
+            print("\n=== LISTA DE CLIENTES ===")
             encontrados = False
             for id_cli, dados in clientes.items():  # ← corrigido: era clientes sem .items()
                 if dados['cadastrado']:
@@ -129,7 +141,7 @@ def buscar_cliente():
 
 def editar_cliente():
     '''Busca o cliente pelo ID e permite atualizar o nome'''
-    print("\n--- EDITAR CLIENTE ---")
+    print("\n=== EDITAR CLIENTE ===")
 
     while True:
         try:
@@ -164,7 +176,7 @@ def editar_cliente():
 
 def excluir_cliente():
     '''Permite excluir um cliente pelo ID com confirmação'''
-    print("\n--- EXCLUIR CLIENTE ---")  # ← corrigido: dizia ARTISTA
+    print("\n=== EXCLUIR CLIENTE ===")  # ← corrigido: dizia ARTISTA
 
     while True:
         try:
@@ -192,12 +204,16 @@ def menu_clientes():
     while True:
         print('''
 =========================================
-          Módulo de Clientes
+        Módulo de Clientes 🧑
 =========================================
   1. Cadastrar Cliente
+              
   2. Buscar Cliente
+              
   3. Editar Cliente
+              
   4. Excluir Cliente
+              
   0. Sair do Módulo
 =========================================''')
         try:
@@ -207,17 +223,26 @@ def menu_clientes():
             continue
 
         if opcao == 1:
+            limpar_tela()
             cadastrar_cliente()
+
         elif opcao == 2:
+            limpar_tela()
             buscar_cliente()
+
         elif opcao == 3:
+            limpar_tela()
             editar_cliente()
+
         elif opcao == 4:
+            limpar_tela()
             excluir_cliente()
+
         elif opcao == 0:
             print("Saindo do módulo...")
             sleep(1)
             break
+
         else:
             print("✋👺🚫 Opção inválida!")
 

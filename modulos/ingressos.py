@@ -13,13 +13,17 @@ ingressos = storage.carregar("ingressos")
 
 if not ingressos:
     ingressos = {
-        1: {
-            'id_show': 1,
-            'preco': 150.00,
-            'qtd_disponivel': 500,
-            'cadastrado':True
-        }
-    }
+    1: {'id_show': 1, 'preco': 120.00, 'qtd_disponivel': 197, 'cadastrado': True},
+    2: {'id_show': 2, 'preco': 150.00, 'qtd_disponivel': 198, 'cadastrado': True},
+    3: {'id_show': 3, 'preco': 90.00, 'qtd_disponivel': 196, 'cadastrado': True},
+    4: {'id_show': 4, 'preco': 80.00, 'qtd_disponivel': 199, 'cadastrado': True},
+    5: {'id_show': 5, 'preco': 140.00, 'qtd_disponivel': 198, 'cadastrado': True},
+    6: {'id_show': 6, 'preco': 100.00, 'qtd_disponivel': 197, 'cadastrado': True},
+    7: {'id_show': 7, 'preco': 170.00, 'qtd_disponivel': 199, 'cadastrado': True},
+    8: {'id_show': 8, 'preco': 110.00, 'qtd_disponivel': 198, 'cadastrado': True},
+    9: {'id_show': 9, 'preco': 95.00, 'qtd_disponivel': 196, 'cadastrado': True},
+    10: {'id_show': 10, 'preco': 180.00, 'qtd_disponivel': 197, 'cadastrado': True}
+}
     storage.salvar("ingressos", ingressos)
 
 
@@ -39,7 +43,7 @@ def obter_nome_show(id_show):
 # ──────────────────────────────────────────────
 
 def cadastrar_ingresso():
-    print("--- Cadastro de Ingressos ---\n")
+    print("=== Cadastro de Ingressos ===\n")
 
     if not shows.shows:
         print("Nenhum show cadastrado no sistema. Cadastre um show primeiro!")
@@ -89,9 +93,9 @@ def cadastrar_ingresso():
 def buscar_ingresso():
     while True:
         print('''
----------------------------------------      
+=======================================
          Buscador de Ingressos
----------------------------------------
+=======================================
   1. Buscar por ID do Ingresso
               
   2. Buscar por ID do Show
@@ -171,7 +175,7 @@ def buscar_ingresso():
             print("Opção desconhecida")
 
 def editar_ingresso():
-    print("---Editor de Ingressos---")
+    print("=== Editor de Ingressos ===")
     print()
 
     while True:
@@ -220,7 +224,7 @@ def editar_ingresso():
 
 
 def excluir_ingresso():
-    print("---Exclusão de Ingresso----")
+    print("=== Exclusão de Ingresso ===")
 
     while True:
         try:
@@ -251,7 +255,7 @@ def menu_ingressos():
 
         print('''
 =========================================
-            Ingressos 🎫
+             Ingressos 🎫
 =========================================
     1. Cadastrar Ingresso
               
@@ -271,13 +275,21 @@ def menu_ingressos():
             continue
 
         if opcao == 1:
+            limpar_tela()
             cadastrar_ingresso()
+
         elif opcao == 2:
+            limpar_tela()
             buscar_ingresso()
+
         elif opcao == 3:
+            limpar_tela()
             editar_ingresso()
+
         elif opcao == 4:
+            limpar_tela()
             excluir_ingresso()
+
         elif opcao == 0:
             print("Saindo...")
             sleep(1)

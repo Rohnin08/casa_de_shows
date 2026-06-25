@@ -14,15 +14,17 @@ shows = storage.carregar("shows")
 
 if not shows:
     shows = {
-        1: {
-            'nome': 'Metal Fest',
-            'lineup': [1, 2],
-            'hora_inicio': time(20, 0),
-            'hora_termino': time(23, 30),
-            'data': date(2025, 7, 15),
-            'cadastrado': True
-        }
-    }
+    1: {'nome': 'Noite do Rock', 'lineup': [1, 2], 'hora_inicio': time(19, 0), 'hora_termino': time(22, 30), 'cadastrado': True},
+    2: {'nome': 'Festival Pop', 'lineup': [4], 'hora_inicio': time(20, 0), 'hora_termino': time(22, 0), 'cadastrado': True},
+    3: {'nome': 'Electronic Night', 'lineup': [3], 'hora_inicio': time(22, 0), 'hora_termino': time(1, 0), 'cadastrado': True},
+    4: {'nome': 'Raízes do Forró', 'lineup': [6], 'hora_inicio': time(18, 30), 'hora_termino': time(21, 30), 'cadastrado': True},
+    5: {'nome': 'Sertanejo Prime', 'lineup': [5], 'hora_inicio': time(21, 0), 'hora_termino': time(23, 30), 'cadastrado': True},
+    6: {'nome': 'MPB em Cena', 'lineup': [7], 'hora_inicio': time(19, 30), 'hora_termino': time(21, 30), 'cadastrado': True},
+    7: {'nome': 'Metal Fest', 'lineup': [8], 'hora_inicio': time(20, 30), 'hora_termino': time(23, 45), 'cadastrado': True},
+    8: {'nome': 'Noite do Jazz', 'lineup': [9], 'hora_inicio': time(19, 0), 'hora_termino': time(21, 0), 'cadastrado': True},
+    9: {'nome': 'Pagode na Praça', 'lineup': [10], 'hora_inicio': time(17, 0), 'hora_termino': time(20, 0), 'cadastrado': True},
+    10: {'nome': 'Festival Mix', 'lineup': [1, 4, 6], 'hora_inicio': time(18, 0), 'hora_termino': time(23, 0), 'cadastrado': True}
+}
     storage.salvar("shows", shows)
 
 # HELPERS
@@ -52,7 +54,7 @@ def exibir_show(id_show):
   Início:     {show['hora_inicio'].strftime('%H:%M')}
   Término:    {show['hora_termino'].strftime('%H:%M')}
   Lineup:     {', '.join(nomes_lineup) if nomes_lineup else 'Nenhum artista vinculado'}
-  ---------------------------------------""") # Tive que usar operador ternario aqui
+  ____________________________________________________""") # Tive que usar operador ternario aqui
 
 # ──────────────────────────────────────────────
 # CRUD
@@ -61,7 +63,7 @@ def exibir_show(id_show):
 # CADASTRAR SHOW
 def cadastrar_show():
     '''Função de cadastrar show'''
-    print("--- Cadastro de Shows ---")
+    print("=== Cadastro de Shows ===")
     print()
     novo_id = g.gerar_id(shows)
     nome = input("Nome do show: ")
@@ -117,9 +119,9 @@ def cadastrar_show():
 def buscar_shows():
     while True:
         print('''
----------------------------------------
+=======================================
         Buscador de Shows
----------------------------------------
+=======================================
   1. Buscar por ID
   2. Buscar por nome
   3. Listar todos
@@ -148,7 +150,7 @@ def buscar_shows():
         elif opcao == 2:
             termo = input("Digite o nome do show (ou parte dele): ").lower()
             encontrados = False
-            print("\n--- Resultados da Busca ---")
+            print("\n=== Resultados da Busca ===")
             for id_show, dados in shows.items():
                 if termo in dados['nome'].lower() and dados['cadastrado']:
                     exibir_show(id_show)
@@ -158,7 +160,7 @@ def buscar_shows():
             input("\nPressione Enter para continuar...")
 
         elif opcao == 3:
-            print("\n--- Todos os Shows Agendados ---")
+            print("\n=== Todos os Shows Agendados ===")
             encontrados = False
             for id_show, dados in shows.items():
                 if dados['cadastrado']:
@@ -176,7 +178,7 @@ def buscar_shows():
 
 # EDITAR SHOW
 def editar_show():
-    print("--- Editor de Shows ---")
+    print("=== Editor de Shows ===")
 
     while True:
         try:
@@ -240,7 +242,7 @@ def editar_show():
 
 # EXCLUIR SHOW
 def excluir_show():
-    print("--- Exclusão de Show ---")
+    print("=== Exclusão de Show ===")
 
     while True:
         try:
@@ -272,12 +274,16 @@ def menu_shows():
     while True:
         print('''
 =========================================
-            Modulo de Shows
+           Modulo de Shows 🎸
 =========================================
     1. Cadastrar Show
+              
     2. Buscar Show
+              
     3. Editar Show
+              
     4. Excluir Show
+              
     0. Sair do Módulo
 =========================================
 ''')
@@ -288,14 +294,19 @@ def menu_shows():
             continue
 
         if opcao == 1:
+            limpar_tela()
             cadastrar_show()
         elif opcao == 2:
+            limpar_tela()
             buscar_shows()
         elif opcao == 3:
+            limpar_tela()
             editar_show()
         elif opcao == 4:
+            limpar_tela()
             excluir_show()
         elif opcao == 0:
+            limpar_tela()
             print("Saindo do módulo...")
             sleep(1)
             break
