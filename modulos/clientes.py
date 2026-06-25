@@ -1,6 +1,8 @@
 import modulos.storage as storage
 import modulos.geral as g
 from time import sleep
+from modulos.geral import limpar_tela
+
 
 # ──────────────────────────────────────────────
 # INICIALIZAÇÃO

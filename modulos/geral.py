@@ -1,3 +1,4 @@
+import os
 # Modulo para guardar funções gerais, aquelas que são usadas por todos.
 
 def gerar_id(colecao: dict) -> int: 
@@ -7,4 +8,6 @@ def gerar_id(colecao: dict) -> int:
     else:
         return 1 
 
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
 

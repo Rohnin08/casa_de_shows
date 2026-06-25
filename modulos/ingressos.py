@@ -1,8 +1,9 @@
 from time import sleep
 import modulos.storage as storage
 import modulos.shows as shows
-import modulos.artistas as artistas
 import modulos.geral as g
+from modulos.geral import limpar_tela
+
 
 # ──────────────────────────────────────────────
 # INICIALIZAÇÃO
