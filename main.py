@@ -63,12 +63,14 @@ while controle == True:
     elif opcao == 4:
         limpar_tela()
         print("Carregando...")
+        limpar_tela()
         sleep(1)
         bilheteria.menu_bilheteria()
     
     elif opcao == 5:
         limpar_tela()
         print("Carregando...")
+        limpar_tela()
         sleep(1)
         limpar_tela()
         relatorio_vendas.menu_relatorios()
@@ -76,6 +78,7 @@ while controle == True:
     elif opcao == 6:
         limpar_tela()
         print("Carregando...")
+        limpar_tela()
         sleep(1)
         limpar_tela()
         sobre.exibir_sobre()
@@ -83,6 +86,7 @@ while controle == True:
     elif opcao == 0:
         limpar_tela()
         print("Saindo do programa...")
+        limpar_tela()
         sleep(1)
         controle = False
 

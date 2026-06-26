@@ -271,6 +271,7 @@ def menu_artistas():
         if opcao == 1:
             limpar_tela()
             cadastrar_artista()
+            limpar_tela()
         elif opcao == 2:
             limpar_tela()
             exibir_todos()
