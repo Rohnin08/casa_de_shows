@@ -24,7 +24,7 @@ while controle == True:
 
     4. Bilheteria 🎫 💵
         
-    5. Relatorios de Vendas 📋 
+    5. Relatorios 📋 
     
     6. Sobre o sistema 🥸
 
@@ -38,24 +38,25 @@ while controle == True:
         continue
 
     # Modulo de Artistas
-    limpar_tela()
-
     if opcao == 1:
         limpar_tela()
         print("Carregando...")
         sleep(1)
+        limpar_tela()
         artistas.menu_artistas()
     
     elif opcao == 2:
         limpar_tela()
         print("Carregando...")
         sleep(1)
+        limpar_tela()
         clientes.menu_clientes()
         
     # Modulo de Shows
     elif opcao == 3:
         limpar_tela()
         print("Carregando...")
+        limpar_tela()
         sleep(1)
         shows.menu_shows()
 
@@ -63,14 +64,13 @@ while controle == True:
     elif opcao == 4:
         limpar_tela()
         print("Carregando...")
-        limpar_tela()
         sleep(1)
+        limpar_tela()
         bilheteria.menu_bilheteria()
     
     elif opcao == 5:
         limpar_tela()
         print("Carregando...")
-        limpar_tela()
         sleep(1)
         limpar_tela()
         relatorio_vendas.menu_relatorios()
@@ -78,7 +78,6 @@ while controle == True:
     elif opcao == 6:
         limpar_tela()
         print("Carregando...")
-        limpar_tela()
         sleep(1)
         limpar_tela()
         sobre.exibir_sobre()
@@ -86,8 +85,8 @@ while controle == True:
     elif opcao == 0:
         limpar_tela()
         print("Saindo do programa...")
-        limpar_tela()
         sleep(1)
+        limpar_tela()
         controle = False
 
     else:

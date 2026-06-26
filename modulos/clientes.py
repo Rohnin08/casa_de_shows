@@ -85,6 +85,8 @@ def cadastrar_cliente():
     }
     storage.salvar("clientes", clientes)
     print(f"\n✅ Cliente '{nome}' cadastrado com sucesso! (ID: {novo_id})")
+    input("Continuar...")
+
 
 
 def buscar_cliente():

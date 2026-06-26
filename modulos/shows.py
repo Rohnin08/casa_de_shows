@@ -1,4 +1,4 @@
-from datetime import date, time
+from datetime import date, time, datetime
 from time import sleep
 import functions.storage as storage
 import modulos.artistas as artistas
@@ -40,11 +40,27 @@ def verificar_conflito(data, hora_inicio, hora_termino, ignorar_id=None):
                 return True  # há conflito
     return False # Se não achar nada, Ok
 
+def ler_data(entrada):
+    while True:
+        try:
+            texto = input(entrada)
+            return datetime.strptime(texto, "%d/%m/%Y").date()
+        except ValueError:
+            print("⚠️ Data inválida. Use o formato DD/MM/AAAA (ex: 15/08/2025)")
+
+def ler_hora(entrada):
+    while True:
+        try:
+            texto = input(entrada)
+            return datetime.strptime(texto, "%H:%M").time()
+        except ValueError:
+            print("⚠️ Hora inválida. Use o formato HH:MM (ex: 19:30)")
+
 # EXIBIR SHOW
 def exibir_show(id_show):
     show = shows[id_show]
     nomes_lineup = []
-    for id_art in show['lineup']:  # ← trocado id_show por id_art, evita sobrescrever o parâmetro
+    for id_art in show['lineup']:
         if id_art in artistas.artistas and artistas.artistas[id_art]['cadastrado']:
             nomes_lineup.append(artistas.artistas[id_art]['nome'])
 
@@ -93,13 +109,9 @@ def cadastrar_show():
         else:
             print("Artista não encontrado.")
 
-    try:
-        hora_inicio  = time(*map(int, input("Horário de início (HH MM): ").split()))
-        hora_termino = time(*map(int, input("Horário de término (HH MM): ").split()))
-        data         = date(*map(int, input("Data (AAAA MM DD): ").split()))
-    except ValueError:
-        print("❌ Data ou horário inválido.")
-        return
+    hora_inicio = ler_hora("Horário de início (HH:MM): ")
+    hora_termino = ler_hora("Horário de término (HH:MM): ")
+    data = ler_data("Data (DD/MM/AAAA): ")
 
     if verificar_conflito(data, hora_inicio, hora_termino):
         print("❌ Já existe um show agendado nessa data/horário.")
@@ -218,13 +230,9 @@ def editar_show():
         else:
             print("Artista não encontrado.")
 
-    try:
-        hora_inicio  = time(*map(int, input("Novo horário de início (HH MM): ").split()))
-        hora_termino = time(*map(int, input("Novo horário de término (HH MM): ").split()))
-        data         = date(*map(int, input("Nova data (AAAA MM DD): ").split()))
-    except ValueError:
-        print("❌ Data ou horário inválido.")
-        return
+    hora_inicio = ler_hora("Novo horário de início (HH:MM): ")
+    hora_termino = ler_hora("Novo horário de término (HH:MM): ")
+    data = ler_data("Nova data (DD/MM/AAAA): ")
 
     if verificar_conflito(data, hora_inicio, hora_termino, ignorar_id=id_show):
         print("❌ Já existe um show agendado nessa data/horário.")

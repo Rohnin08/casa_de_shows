@@ -72,7 +72,9 @@ def cadastrar_ingresso():
             except ValueError:
                 print("⚠️ Valor invalido, tente novamente")
 
-        ids_cadastrados = [i['id_show'] for i in ingressos.values() if i['cadastrado']]
+        for i in ingressos.values():
+            if i['cadastrado']:
+                ids_cadastrados = i['id_show']
 
         if id_show not in ids_cadastrados:
             ingressos[novo_id] = {

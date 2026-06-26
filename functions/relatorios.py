@@ -107,7 +107,7 @@ def buscar_informacoes_cli_venda():
         nomes_lineup = []
         for id_art in show['lineup']:
             if id_art in artistas.artistas:
-                nomes_lineup.append(artistas.artistas[id_art['nome']])
+                nomes_lineup.append(artistas.artistas[id_art]['nome'])
 
         
         print(f'''
@@ -128,7 +128,7 @@ def menu_relatorios():
 =========================================
   1. Vendas por data
   2. Vendas acima de um valor
-  3. Vendas abaixo de um valor
+  3. Exibir dados da compra de um cliente
   0. Voltar
 =========================================
 ''')
@@ -140,14 +140,19 @@ def menu_relatorios():
             continue
 
         if opcao == 1:
-                limpar_tela()
-                relatorio_vendas_por_data()
-                input("\nEnter para continuar...")
+            limpar_tela()
+            relatorio_vendas_por_data()
+            input("\nEnter para continuar...")
                 
         elif opcao == 2:
             limpar_tela()
             relatorio_vendas_por_valor()
             input("\nEnter para continuar...")
+
+        elif opcao == 3:
+            limpar_tela()
+            buscar_informacoes_cli_venda()
+            input("enter para continuar...")
 
         elif opcao == 0:
             break

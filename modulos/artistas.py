@@ -57,6 +57,7 @@ def cadastrar_artista():
     
     storage.salvar("artistas", artistas)
     print(f"\n✅ {nome} cadastrado com sucesso! (ID: {novo_id})")
+    input("Continuar...")
 
 def exibir_todos():
     if not artistas:
