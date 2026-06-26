@@ -1,8 +1,10 @@
 from datetime import datetime
 import modulos.vendas as vendas
 import modulos.clientes as clientes
+import modulos.artistas as artistas
+import modulos.ingressos as ingressos
 import modulos.shows as shows
-from modulos.geral import limpar_tela
+from functions.geral import limpar_tela
 
 # VENDAS POR DATA
 def relatorio_vendas_por_data():
@@ -79,6 +81,44 @@ def relatorio_vendas_por_valor():
 ========================================
 """)
     
+def buscar_informacoes_cli_venda():
+    '''Função que cruza os dados de todos os modulos e mostra as informações de um ingresso comprado por um cliente'''
+    while True: 
+        try:
+            id_cli = int(input("ID do Cliente: "))
+            break
+        except ValueError:
+            print("⚠️ ID inválido, tente novamente.")
+    if id_cli not in clientes.clientes or not clientes.clientes[id_cli]['cadastrado']:
+        print("❌ Cliente não encontrado.")
+    
+    cliente = clientes.clientes[id_cli]
+    print(f"\nCliente: {cliente['nome']}")
+
+    if not cliente['historico_compras']:
+        print("❌ Este cliente ainda não possui compras registradas. ")
+        return
+    
+    for id_ven in cliente['historico_compras']:
+        venda = vendas.vendas[id_ven]
+        ingresso = ingressos.ingressos[venda['id_ingresso']]
+        show = shows.shows[ingresso['id_show']]
+        
+        nomes_lineup = []
+        for id_art in show['lineup']:
+            if id_art in artistas.artistas:
+                nomes_lineup.append(artistas.artistas[id_art['nome']])
+
+        
+        print(f'''
+Venda #{id_ven}
+Show       : {show['nome']} — {show['data'].strftime('%d/%m/%Y')}
+Artistas   : {', '.join(nomes_lineup)}
+Quantidade : {venda['quantidade']}
+Total      : R$ {venda['valor_total']:.2f}
+
+''')
+
 
 def menu_relatorios():
     while True:

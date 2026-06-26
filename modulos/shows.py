@@ -1,9 +1,9 @@
 from datetime import date, time
 from time import sleep
-import modulos.storage as storage
+import functions.storage as storage
 import modulos.artistas as artistas
-import modulos.geral as g
-from modulos.geral import limpar_tela
+import functions.geral as g
+from functions.geral import limpar_tela
 
 
 # ──────────────────────────────────────────────
@@ -14,17 +14,18 @@ shows = storage.carregar("shows")
 
 if not shows:
     shows = {
-    1: {'nome': 'Noite do Rock', 'lineup': [1, 2], 'hora_inicio': time(19, 0), 'hora_termino': time(22, 30), 'cadastrado': True},
-    2: {'nome': 'Festival Pop', 'lineup': [4], 'hora_inicio': time(20, 0), 'hora_termino': time(22, 0), 'cadastrado': True},
-    3: {'nome': 'Electronic Night', 'lineup': [3], 'hora_inicio': time(22, 0), 'hora_termino': time(1, 0), 'cadastrado': True},
-    4: {'nome': 'Raízes do Forró', 'lineup': [6], 'hora_inicio': time(18, 30), 'hora_termino': time(21, 30), 'cadastrado': True},
-    5: {'nome': 'Sertanejo Prime', 'lineup': [5], 'hora_inicio': time(21, 0), 'hora_termino': time(23, 30), 'cadastrado': True},
-    6: {'nome': 'MPB em Cena', 'lineup': [7], 'hora_inicio': time(19, 30), 'hora_termino': time(21, 30), 'cadastrado': True},
-    7: {'nome': 'Metal Fest', 'lineup': [8], 'hora_inicio': time(20, 30), 'hora_termino': time(23, 45), 'cadastrado': True},
-    8: {'nome': 'Noite do Jazz', 'lineup': [9], 'hora_inicio': time(19, 0), 'hora_termino': time(21, 0), 'cadastrado': True},
-    9: {'nome': 'Pagode na Praça', 'lineup': [10], 'hora_inicio': time(17, 0), 'hora_termino': time(20, 0), 'cadastrado': True},
-    10: {'nome': 'Festival Mix', 'lineup': [1, 4, 6], 'hora_inicio': time(18, 0), 'hora_termino': time(23, 0), 'cadastrado': True}
-}
+        1: {'nome': 'Noite do Rock', 'lineup': [1, 2], 'hora_inicio': time(19, 0), 'hora_termino': time(22, 30), 'data': date(2025, 8, 1), 'cadastrado': True},
+        2: {'nome': 'Festival Pop', 'lineup': [4], 'hora_inicio': time(20, 0), 'hora_termino': time(22, 0), 'data': date(2025, 8, 2), 'cadastrado': True},
+        3: {'nome': 'Electronic Night', 'lineup': [3], 'hora_inicio': time(22, 0), 'hora_termino': time(1, 0), 'data': date(2025, 8, 3), 'cadastrado': True},
+        4: {'nome': 'Raízes do Forró', 'lineup': [6], 'hora_inicio': time(18, 30), 'hora_termino': time(21, 30), 'data': date(2025, 8, 4), 'cadastrado': True},
+        5: {'nome': 'Sertanejo Prime', 'lineup': [5], 'hora_inicio': time(21, 0), 'hora_termino': time(23, 30), 'data': date(2025, 8, 5), 'cadastrado': True},
+        6: {'nome': 'MPB em Cena', 'lineup': [7], 'hora_inicio': time(19, 30), 'hora_termino': time(21, 30), 'data': date(2025, 8, 6), 'cadastrado': True},
+        7: {'nome': 'Metal Fest', 'lineup': [8], 'hora_inicio': time(20, 30), 'hora_termino': time(23, 45), 'data': date(2025, 8, 7), 'cadastrado': True},
+        8: {'nome': 'Noite do Jazz', 'lineup': [9], 'hora_inicio': time(19, 0), 'hora_termino': time(21, 0), 'data': date(2025, 8, 8), 'cadastrado': True},
+        9: {'nome': 'Pagode na Praça', 'lineup': [10], 'hora_inicio': time(17, 0), 'hora_termino': time(20, 0), 'data': date(2025, 8, 9), 'cadastrado': True},
+        10: {'nome': 'Festival Mix', 'lineup': [1, 4, 6], 'hora_inicio': time(18, 0), 'hora_termino': time(23, 0), 'data': date(2025, 8, 10), 'cadastrado': True}
+    }
+
     storage.salvar("shows", shows)
 
 # HELPERS

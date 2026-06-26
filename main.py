@@ -1,16 +1,13 @@
-import os
 from time import sleep
 import modulos.artistas as artistas
 import modulos.shows as shows
 import modulos.clientes as clientes
 import modulos.bilheteria as bilheteria
-import modulos.relatorios_vendas as relatorio_vendas
-import modulos.sobre as sobre
-from modulos.geral import limpar_tela
+import functions.relatorios as relatorio_vendas
+import functions.sobre as sobre
+from functions.geral import limpar_tela
 
 controle = True
-
-
 
 # Menu principal do sistema
 while controle == True:

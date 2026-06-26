@@ -1,7 +1,7 @@
-import modulos.storage as storage
-import modulos.geral as g
+import functions.storage as storage
+import functions.geral as g
 from time import sleep
-from modulos.geral import limpar_tela
+from functions.geral import limpar_tela
 
 
 # ──────────────────────────────────────────────
@@ -12,16 +12,16 @@ clientes = storage.carregar('clientes')
 
 if not clientes:
     clientes = {
-    1: {'nome': 'João Pedro', 'historico_de_compras': [1], 'cadastrado': True},
-    2: {'nome': 'Maria Eduarda', 'historico_de_compras': [2], 'cadastrado': True},
-    3: {'nome': 'Carlos Henrique', 'historico_de_compras': [3], 'cadastrado': True},
-    4: {'nome': 'Ana Clara', 'historico_de_compras': [4], 'cadastrado': True},
-    5: {'nome': 'Felipe Santos', 'historico_de_compras': [5], 'cadastrado': True},
-    6: {'nome': 'Juliana Lima', 'historico_de_compras': [6], 'cadastrado': True},
-    7: {'nome': 'Rafael Souza', 'historico_de_compras': [7], 'cadastrado': True},
-    8: {'nome': 'Beatriz Oliveira', 'historico_de_compras': [8], 'cadastrado': True},
-    9: {'nome': 'Gustavo Almeida', 'historico_de_compras': [9], 'cadastrado': True},
-    10: {'nome': 'Camila Ferreira', 'historico_de_compras': [10], 'cadastrado': True}
+    1: {'nome': 'João Pedro', 'historico_compras': [1], 'cadastrado': True},
+    2: {'nome': 'Maria Eduarda', 'historico_compras': [2], 'cadastrado': True},
+    3: {'nome': 'Carlos Henrique', 'historico_compras': [3], 'cadastrado': True},
+    4: {'nome': 'Ana Clara', 'historico_compras': [4], 'cadastrado': True},
+    5: {'nome': 'Felipe Santos', 'historico_compras': [5], 'cadastrado': True},
+    6: {'nome': 'Juliana Lima', 'historico_compras': [6], 'cadastrado': True},
+    7: {'nome': 'Rafael Souza', 'historico_compras': [7], 'cadastrado': True},
+    8: {'nome': 'Beatriz Oliveira', 'historico_compras': [8], 'cadastrado': True},
+    9: {'nome': 'Gustavo Almeida', 'historico_compras': [9], 'cadastrado': True},
+    10: {'nome': 'Camila Ferreira', 'historico_compras': [10], 'cadastrado': True}
 }
 
     storage.salvar("clientes", clientes)

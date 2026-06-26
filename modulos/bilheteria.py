@@ -1,7 +1,7 @@
 from time import sleep
 import modulos.vendas as vendas
 import modulos.ingressos as ingressos
-from modulos.geral import limpar_tela
+from functions.geral import limpar_tela
 
 
 # ──────────────────────────────────────────────

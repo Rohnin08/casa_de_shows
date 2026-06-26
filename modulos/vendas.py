@@ -1,12 +1,12 @@
 from datetime import datetime
 from time import sleep
-import modulos.storage as storage
+import functions.storage as storage
 import modulos.clientes as clientes
 import modulos.artistas as artistas
 import modulos.shows as shows
 import modulos.ingressos as ingressos
-import modulos.geral as g
-from modulos.geral import limpar_tela
+import functions.geral as g
+from functions.geral import limpar_tela
 
 
 # ──────────────────────────────────────────────
@@ -295,7 +295,7 @@ def buscar_venda():
          Buscador de Vendas
 =======================================
   1. Buscar por ID da Venda
-  2. Buscar por Cliente
+  2. Buscar por cliente
   3. Buscar por Show
   0. Voltar
               

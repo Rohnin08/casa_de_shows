@@ -1,8 +1,8 @@
 from time import sleep
-import modulos.storage as storage
+import functions.storage as storage
 import modulos.shows as shows
-import modulos.geral as g
-from modulos.geral import limpar_tela
+import functions.geral as g
+from functions.geral import limpar_tela
 
 
 # ──────────────────────────────────────────────
